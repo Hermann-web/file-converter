@@ -3,21 +3,24 @@ from abc import ABC, abstractmethod
 from filetype_handler import FileType
 
 class InputFile:
-    def __init__(self, file_path, file_type=None, add_suffix=False):
+    def __init__(self, file_path, file_type=None, add_suffix=False, read_content=False):
         self.file_path = Path(file_path)
         suffix = self.file_path.suffix
 
         if file_type:
             self.file_type = FileType.from_suffix(file_type, raise_err=True)
         else:
-            self.file_type = FileType.from_path(file_path, raise_err=True)
+            self.file_type = FileType.from_path(file_path, read_content=read_content, raise_err=True)
         
         if suffix:
             # check the suffix
-            assert self.file_type.is_valid_suffix(suffix), f"suffix {suffix} not valid for filetype {self.file_type}"
+            self.file_type.is_valid_suffix(suffix, raise_err=True)
         elif add_suffix and self.file_type.is_true_filetype(): 
             # add suffix to filepath
             self.file_path = self.file_path.with_suffix(self.file_type.get_suffix())
+        
+        if read_content:
+            self.file_type.is_valid_mime_type(self.file_path, raise_err=True)
         
 
     

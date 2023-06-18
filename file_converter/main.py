@@ -13,10 +13,10 @@ from converters import (
 class ConverterApp:
     def __init__(self, input_file_path, input_file_type=None, output_file_path=None, output_file_type=None):
         self.converters = {}
-        self.input_file = InputFile(input_file_path, file_type=input_file_type)
+        self.input_file = InputFile(input_file_path, file_type=input_file_type, add_suffix=False, read_content=True)
         if not output_file_path:
             output_file_path = str(Path(input_file_path).with_suffix(''))
-        self.output_file = InputFile(output_file_path, file_type=output_file_type, add_suffix=True)
+        self.output_file = InputFile(output_file_path, file_type=output_file_type, add_suffix=True, read_content=False)
         
         self.add_converter_pair(XMLToJSONConverter)
         self.add_converter_pair(JSONToCSVConverter)
