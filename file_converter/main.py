@@ -1,9 +1,9 @@
 import argparse
 from pathlib import Path
 from typing import Type, Tuple
-from file_converter.filetype_handler import FileType
-from file_converter.convertion_handler import InputFile, BaseConverter
-from file_converter.converters import (
+from filetype_handler import FileType
+from convertion_handler import InputFile, BaseConverter
+from converters import (
     XMLToJSONConverter,
     JSONToCSVConverter,
     CSVToXMLConverter,
