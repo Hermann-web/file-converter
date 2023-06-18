@@ -52,7 +52,7 @@ class FileType(Enum):
     def is_valid_suffix(self, suffix: str):
         return FileType.from_suffix(suffix=suffix) == self
 
-    def matches_suffix(self, path: Path):
+    def is_valid_path(self, path: Path):
         return FileType.from_path(path) == self
 
 def test_file_type_parsing():
@@ -79,26 +79,26 @@ def test_file_type_matching():
     json_path = Path('config.json')
     img_path = Path('picture.jpg')
     
-    assert FileType.TEXT.matches_suffix(text_path)
-    assert not FileType.TEXT.matches_suffix(csv_path)
+    assert FileType.TEXT.is_valid_path(text_path)
+    assert not FileType.TEXT.is_valid_path(csv_path)
     
-    assert FileType.CSV.matches_suffix(csv_path)
-    assert not FileType.CSV.matches_suffix(excel_path)
+    assert FileType.CSV.is_valid_path(csv_path)
+    assert not FileType.CSV.is_valid_path(excel_path)
     
-    assert FileType.EXCEL.matches_suffix(excel_path)
-    assert not FileType.EXCEL.matches_suffix(json_path)
+    assert FileType.EXCEL.is_valid_path(excel_path)
+    assert not FileType.EXCEL.is_valid_path(json_path)
     
-    assert FileType.JSON.matches_suffix(json_path)
-    assert not FileType.JSON.matches_suffix(img_path)
+    assert FileType.JSON.is_valid_path(json_path)
+    assert not FileType.JSON.is_valid_path(img_path)
     
-    assert FileType.JPG.matches_suffix(img_path)
-    assert not FileType.JPG.matches_suffix(text_path)
+    assert FileType.JPG.is_valid_path(img_path)
+    assert not FileType.JPG.is_valid_path(text_path)
     
-    assert FileType.NOTYPE.matches_suffix(Path('no_extension'))
-    assert not FileType.NOTYPE.matches_suffix(text_path)
+    assert FileType.NOTYPE.is_valid_path(Path('no_extension'))
+    assert not FileType.NOTYPE.is_valid_path(text_path)
     
-    assert FileType.UNHANDLED.matches_suffix(Path('unknown.xyz'))
-    assert not FileType.UNHANDLED.matches_suffix(csv_path)
+    assert FileType.UNHANDLED.is_valid_path(Path('unknown.xyz'))
+    assert not FileType.UNHANDLED.is_valid_path(csv_path)
 
 if __name__ == '__main__':
     test_file_type_parsing()
