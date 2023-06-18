@@ -1,6 +1,10 @@
 from enum import Enum
 from pathlib import Path
+import magic # pip install python-magic
 
+def get_file_type(file_path):
+    mime = magic.Magic(mime=True)
+    return mime.from_file(file_path)
 
 class FileType(Enum):
     NOTYPE = []
@@ -35,6 +39,16 @@ class FileType(Enum):
         else:
             return cls.UNHANDLED
     
+    
+
+    @classmethod
+    def from_content(cls, path: Path, raise_err=False):
+        file_path = Path(path)
+        file_type = get_file_type(file_path)
+        print(file_type)
+        member = cls.UNHANDLED
+        return member
+
     @classmethod
     def from_path(cls, path: Path, raise_err=False):
         suffix = Path(path).suffix
@@ -70,6 +84,16 @@ def test_file_type_parsing():
     assert FileType.from_path(img_path) == FileType.JPG
     assert FileType.from_path(Path('no_extension')) == FileType.NOTYPE
     assert FileType.from_path(Path('unknown.xyz')) == FileType.UNHANDLED
+
+    FileType.from_content(text_path)
+    FileType.from_content(csv_path)
+    FileType.from_content(excel_path)
+    FileType.from_content(json_path)
+    FileType.from_content(img_path)
+    FileType.from_content(Path('no_extension'))
+    FileType.from_content(Path('unknown.xyz')) 
+
+    
 
 def test_file_type_matching():
     # Test matching of different file types
