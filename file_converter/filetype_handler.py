@@ -8,27 +8,50 @@ class FileType(Enum):
     CSV = ['csv']
     EXCEL = ['xls', 'xlsx']
     JSON = ['json']
-    IMG = ['jpg', 'jpeg', 'png', 'gif']
+    ## IMG
+    JPG = ['jpg']
+    JPEG = ['jpeg']
+    PNG = ['png']
+    GIF = ['gif']
+
     XML = ['xml']
     MARKDOWN = ['md']
     UNHANDLED = []
     
     @classmethod
-    def from_suffix(cls, suffix: str):
+    def from_suffix(cls, suffix: str, raise_err:bool=False):
         suffix = suffix.lower().lstrip('.')
         if not suffix:
-            return cls.NOTYPE
+            if raise_err:
+                raise ValueError("filetype not parse from empty suffix")
+            else:
+                return cls.NOTYPE
         for member in cls:
             if member.value and suffix in member.value:
                 return member
-        return cls.UNHANDLED
+        
+        if raise_err:
+            raise ValueError(f"unhandled filetype from suffix={suffix}")
+        else:
+            return cls.UNHANDLED
     
     @classmethod
-    def from_path(cls, path: Path):
+    def from_path(cls, path: Path, raise_err=False):
         suffix = Path(path).suffix
-        member = cls.from_suffix(suffix)
+        member = cls.from_suffix(suffix, raise_err=raise_err)
         return member
     
+    def is_true_filetype(self):
+        return len(self.value) != 0
+    
+    def get_suffix(self):
+        if not self.is_true_filetype():
+            return '.'
+        return '.' + self.value[0]
+    
+    def is_valid_suffix(self, suffix: str):
+        return FileType.from_suffix(suffix=suffix) == self
+
     def matches_suffix(self, path: Path):
         return FileType.from_path(path) == self
 
@@ -44,7 +67,7 @@ def test_file_type_parsing():
     assert FileType.from_path(csv_path) == FileType.CSV
     assert FileType.from_path(excel_path) == FileType.EXCEL
     assert FileType.from_path(json_path) == FileType.JSON
-    assert FileType.from_path(img_path) == FileType.IMG
+    assert FileType.from_path(img_path) == FileType.JPG
     assert FileType.from_path(Path('no_extension')) == FileType.NOTYPE
     assert FileType.from_path(Path('unknown.xyz')) == FileType.UNHANDLED
 
@@ -68,8 +91,8 @@ def test_file_type_matching():
     assert FileType.JSON.matches_suffix(json_path)
     assert not FileType.JSON.matches_suffix(img_path)
     
-    assert FileType.IMG.matches_suffix(img_path)
-    assert not FileType.IMG.matches_suffix(text_path)
+    assert FileType.JPG.matches_suffix(img_path)
+    assert not FileType.JPG.matches_suffix(text_path)
     
     assert FileType.NOTYPE.matches_suffix(Path('no_extension'))
     assert not FileType.NOTYPE.matches_suffix(text_path)

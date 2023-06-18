@@ -14,11 +14,9 @@ class ConverterApp:
     def __init__(self, input_file_path, input_file_type=None, output_file_path=None, output_file_type=None):
         self.converters = {}
         self.input_file = InputFile(input_file_path, file_type=input_file_type)
-        if output_file_path:
-            self.output_file = InputFile(output_file_path, file_type=output_file_type)
-        else:
+        if not output_file_path:
             output_file_path = str(Path(input_file_path).with_suffix(''))
-            self.output_file = InputFile(output_file_path, file_type=output_file_type)
+        self.output_file = InputFile(output_file_path, file_type=output_file_type, add_suffix=True)
         
         self.add_converter_pair(XMLToJSONConverter)
         self.add_converter_pair(JSONToCSVConverter)
