@@ -1,5 +1,5 @@
-from filetype_handler import FileType
-from convertion_handler import BaseConverter
+from file_converter.filetype_handler import FileType
+from file_converter.convertion_handler import BaseConverter
 from pathlib import Path
 
 class XMLToJSONConverter(BaseConverter):

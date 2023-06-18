@@ -1,6 +1,6 @@
 from pathlib import Path
 from abc import ABC, abstractmethod
-from filetype_handler import FileType
+from file_converter.filetype_handler import FileType
 
 class InputFile:
     def __init__(self, file_path, file_type=None):
