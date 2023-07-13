@@ -21,7 +21,7 @@ class InputFile:
         
         if read_content:
             self.file_type.is_valid_mime_type(self.file_path, raise_err=True)
-        
+    
 
     
     def __str__(self):
@@ -36,12 +36,34 @@ class BaseConverter(ABC):
 
     def convert(self):
         # log
-        print(f"Converting {self.get_supported_input_type()} to {self.get_supported_output_type()}...")
+        print(f"Convertion of {self.get_supported_input_type()} to {self.get_supported_output_type()}...")
         print(f"input = {self.input_file}")
+        
+        # read file 
+        print("read file from io ...")
+        self.input_content = self._read_content(self.input_file)
+        print("done")
+        
+        # check 
+        print("check input content ...")
+        assert self._check_input_format(self.input_content)
+        print("done")
+        
         # convert file
-        self._convert(self.input_file.file_path, self.output_file.file_path)
-        # # save file
-        # self.output_file.file_path.
+        print("convertin file ...")
+        self.output_content = self._convert(self.input_content)
+        print("done")
+        
+        # check 
+        print("check output content ...")
+        assert self._check_output_format(self.output_content)
+        print("done")
+        
+        # save file
+        print("write content to io")
+        self._write_content(self.output_file, self.output_content)
+        print("done")
+        
         # log
         print(f"output = {self.output_file}")
         print("succeed")
@@ -94,3 +116,22 @@ class BaseConverter(ABC):
     @abstractmethod
     def _convert(self, input_path:Path, output_path:Path):
         print("conversion method not implemented")
+
+    @abstractmethod
+    def _read_content(self, input_path:Path):
+        print("read method not implemented")
+        return None
+
+    @abstractmethod
+    def _check_input_format(self, input_content):
+        print("input check method not implemented")
+
+    @abstractmethod
+    def _check_output_format(self, output_content):
+        print("output check method not implemented")
+    
+    @abstractmethod
+    def _write_content(self, output_path:Path, output_content):
+        print("write method not implemented")
+
+    

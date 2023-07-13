@@ -1,8 +1,13 @@
-from filetype_handler import FileType
 from convertion_handler import BaseConverter
-from pathlib import Path
+from filetype_handler import FileType
+from io_handler import TextReader, TextWriter, CSVReader, CSVWriter, JSONReader, JSONWriter
 
-class XMLToJSONConverter(BaseConverter):
+
+class TextToTextConverter(BaseConverter, TextReader, TextWriter):
+    def __init__(self):
+        super().__init__() 
+
+class XMLToJSONConverter(BaseConverter, XMLReader, JSONWriter):
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.XML
@@ -11,11 +16,12 @@ class XMLToJSONConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.JSON
 
-    def _convert(self, input_path:Path, output_path:Path):
-        return
+    def _convert(self, input_content:str):
+        json_data = {}
+        return json_data
 
 
-class TXTToMDConverter(BaseConverter):
+class TXTToMDConverter(TextToTextConverter):
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.TEXT
@@ -24,13 +30,12 @@ class TXTToMDConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.MARKDOWN
 
-    def _convert(self, input_path:Path, output_path:Path):
-        input_content = input_path.read_text()
-        output_path.write_text(input_content)
-        return
+    def _convert(self, input_content:str):
+        md_content = input_content
+        return md_content
 
 
-class JSONToCSVConverter(BaseConverter):
+class JSONToCSVConverter(BaseConverter, JSONReader, CSVWriter):
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.JSON
@@ -39,11 +44,14 @@ class JSONToCSVConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.CSV
 
-    def _convert(self, input_path:Path, output_path:Path):
-        return
+    def _convert(self, input_content:dict):
+        json_data : dict = input_content
+        columns, rows = ["a", "b"], [ ["a1", "b1"], ["a2", "b2"] ]
+        return columns, rows
 
 
-class CSVToXMLConverter(BaseConverter):
+class CSVToXMLConverter(BaseConverter, CSVReader, TextWriter):
+
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.CSV
@@ -51,8 +59,8 @@ class CSVToXMLConverter(BaseConverter):
     @classmethod
     def _get_supported_output_type(cls) -> FileType:
         return FileType.XML
-
-    def _convert(self, input_path:Path, output_path:Path):
-        return
-
-
+    
+    def _convert(self, input_content:CSVToXMLConverter.input_format):
+        columns, rows = ["a", "b"], [ ["a1", "b1"], ["a2", "b2"] ]
+        xml_text = ""
+        return xml_text
