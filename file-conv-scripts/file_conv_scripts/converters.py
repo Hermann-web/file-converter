@@ -1,12 +1,20 @@
 from file_conv_framework.base_converter import BaseConverter
 from file_conv_framework.filetypes import FileType
-from file_conv_framework.io_handler import TextReader, TextWriter, CSVReader, CSVWriter, JSONReader, JSONWriter, XMLReader
-
+from file_conv_framework.io_handler import (
+    CSVReader,
+    CSVWriter,
+    JSONReader,
+    JSONWriter,
+    TextReader,
+    TextWriter,
+    XMLReader,
+)
 
 
 class TextToTextConverter(BaseConverter, TextReader, TextWriter):
     def __init__(self):
-        super().__init__() 
+        super().__init__()
+
 
 class XMLToJSONConverter(BaseConverter, XMLReader, JSONWriter):
     @classmethod
@@ -17,7 +25,7 @@ class XMLToJSONConverter(BaseConverter, XMLReader, JSONWriter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.JSON
 
-    def _convert(self, input_content:str):
+    def _convert(self, input_content: str):
         json_data = {}
         return json_data
 
@@ -31,7 +39,7 @@ class TXTToMDConverter(TextToTextConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.MARKDOWN
 
-    def _convert(self, input_content:str):
+    def _convert(self, input_content: str):
         md_content = input_content
         return md_content
 
@@ -45,9 +53,9 @@ class JSONToCSVConverter(BaseConverter, JSONReader, CSVWriter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.CSV
 
-    def _convert(self, input_content:dict):
-        json_data : dict = input_content
-        columns, rows = ["a", "b"], [ ["a1", "b1"], ["a2", "b2"] ]
+    def _convert(self, input_content: dict):
+        json_data: dict = input_content
+        columns, rows = ["a", "b"], [["a1", "b1"], ["a2", "b2"]]
         return columns, rows
 
 
@@ -60,8 +68,8 @@ class CSVToXMLConverter(BaseConverter, CSVReader, TextWriter):
     @classmethod
     def _get_supported_output_type(cls) -> FileType:
         return FileType.XML
-    
+
     def _convert(self, input_content):
-        columns, rows = ["a", "b"], [ ["a1", "b1"], ["a2", "b2"] ]
+        columns, rows = ["a", "b"], [["a1", "b1"], ["a2", "b2"]]
         xml_text = ""
         return xml_text

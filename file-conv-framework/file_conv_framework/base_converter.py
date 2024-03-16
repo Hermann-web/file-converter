@@ -4,8 +4,8 @@ Base Converter Module
 This module provides base classes for file conversion.
 """
 
-from pathlib import Path
 from abc import ABC, abstractmethod
+from pathlib import Path
 
 from file_conv_framework.filetypes import EmptySuffixError, FileType
 
@@ -18,7 +18,7 @@ class ResolvedInputFile:
     def __init__(self, file_path, file_type=None, add_suffix=False, read_content=False):
         """
         Initializes an instance of ResolvedInputFile.
-        
+
         Args:
             file_path (str): The path to the file.
             file_type (FileType, optional): The type of the file. Defaults to None.
@@ -36,43 +36,46 @@ class ResolvedInputFile:
         self.suffix = self.file_type.get_suffix()
 
         # Optionally add suffix to the file path
-        if add_suffix: 
+        if add_suffix:
             self.file_path = self.file_path.with_suffix(self.suffix)
 
     def __resolve_filetype__(self, file_type, file_path, read_content) -> FileType:
         """
         Resolve the file type based on the provided information.
-        
+
         Args:
             file_type (FileType or str, optional): The file type or file extension. Defaults to None.
             file_path (str): The path to the file.
             read_content (bool): Whether to read the content of the file.
-        
+
         Returns:
             FileType: The resolved file type.
         """
         if not file_type:
             try:
-                file_type = FileType.from_path(file_path, read_content=read_content, raise_err=True)
+                file_type = FileType.from_path(
+                    file_path, read_content=read_content, raise_err=True
+                )
             except EmptySuffixError:
                 raise ValueError("filepath suffix is emtpy but file_type not set")
             return file_type
 
         resolved_file_type = FileType.from_suffix(file_type, raise_err=True)
 
-        file_type_from_path = FileType.from_path(file_path, read_content=read_content, raise_err=False)
+        file_type_from_path = FileType.from_path(
+            file_path, read_content=read_content, raise_err=False
+        )
 
         if file_type_from_path.is_true_filetype():
             assert file_type_from_path == resolved_file_type
 
         return resolved_file_type
-    
+
     def __str__(self):
         """
         Returns a string representation of the resolved file path.
         """
         return str(Path(self.file_path).resolve())
-
 
 
 class BaseConverter(ABC):
@@ -83,34 +86,36 @@ class BaseConverter(ABC):
 
     def convert(self):
         # log
-        print(f"Convertion of {self.get_supported_input_type()} to {self.get_supported_output_type()}...")
+        print(
+            f"Convertion of {self.get_supported_input_type()} to {self.get_supported_output_type()}..."
+        )
         print(f"input = {self.input_file}")
-        
-        # read file 
+
+        # read file
         print("read file from io ...")
         self.input_content = self._read_content(self.input_file)
         print("done")
-        
-        # check 
+
+        # check
         print("check input content ...")
         assert self._check_input_format(self.input_content)
         print("done")
-        
+
         # convert file
         print("convertin file ...")
         self.output_content = self._convert(self.input_content)
         print("done")
-        
-        # check 
+
+        # check
         print("check output content ...")
         assert self._check_output_format(self.output_content)
         print("done")
-        
+
         # save file
         print("write content to io")
         self._write_content(self.output_file, self.output_content)
         print("done")
-        
+
         # log
         print(f"output = {self.output_file}")
         print("succeed")
@@ -161,11 +166,11 @@ class BaseConverter(ABC):
         pass
 
     @abstractmethod
-    def _convert(self, input_path:Path, output_path:Path):
+    def _convert(self, input_path: Path, output_path: Path):
         print("conversion method not implemented")
 
     @abstractmethod
-    def _read_content(self, input_path:Path):
+    def _read_content(self, input_path: Path):
         print("read method not implemented")
         return None
 
@@ -176,9 +181,7 @@ class BaseConverter(ABC):
     @abstractmethod
     def _check_output_format(self, output_content):
         print("output check method not implemented")
-    
-    @abstractmethod
-    def _write_content(self, output_path:Path, output_content):
-        print("write method not implemented")
 
-    
+    @abstractmethod
+    def _write_content(self, output_path: Path, output_content):
+        print("write method not implemented")

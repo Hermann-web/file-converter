@@ -3,6 +3,7 @@ try:
 except ImportError:
     magic = None
 
+
 class MimeGuesser:
     _instance = None
 
@@ -35,8 +36,10 @@ class MimeGuesser:
             str: The guessed MIME type.
         """
         if not cls._instance.mime_guesser:
-            raise ImportError("magic module is not imported. Please install it with 'pip install python-magic'")
-        
+            raise ImportError(
+                "magic module is not imported. Please install it with 'pip install python-magic'"
+            )
+
         return cls._instance.mime_guesser.from_file(file_path)
 
 
