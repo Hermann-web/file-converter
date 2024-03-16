@@ -10,6 +10,8 @@ from file_conv_framework.io_handler import (
     XMLReader,
 )
 
+from file_conv_scripts.io_handlers import ExcelReader
+
 
 class TextToTextConverter(BaseConverter, TextReader, TextWriter):
     def __init__(self):
@@ -73,3 +75,18 @@ class CSVToXMLConverter(BaseConverter, CSVReader, TextWriter):
         columns, rows = ["a", "b"], [["a1", "b1"], ["a2", "b2"]]
         xml_text = ""
         return xml_text
+
+class XLXSToCSVConverter(BaseConverter, ExcelReader, CSVWriter):
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.EXCEL
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.CSV
+
+    def _convert(self, input_content):
+        # Assuming input_content is a pandas DataFrame representing the Excel data
+        # You may need to adjust this according to your specific use case
+        csv_content = input_content.to_csv(index=False)
+        return csv_content

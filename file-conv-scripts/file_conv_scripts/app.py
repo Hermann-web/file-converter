@@ -16,6 +16,7 @@ from file_conv_scripts.converters import (
     CSVToXMLConverter,
     JSONToCSVConverter,
     TXTToMDConverter,
+    XLXSToCSVConverter,
     XMLToJSONConverter,
 )
 
@@ -27,6 +28,7 @@ class ConverterApp(BaseConverterApp):
         JSONToCSVConverter,
         CSVToXMLConverter,
         TXTToMDConverter,
+        XLXSToCSVConverter
     ]
 
 

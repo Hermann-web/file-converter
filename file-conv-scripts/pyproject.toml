@@ -17,6 +17,14 @@ python-magic = "^0.4.27"
 black = "^24.3.0"
 isort = "^5.13.2"
 
+
+[tool.poetry.group.dataframe.dependencies]
+pandas = "^2.2.1"
+
+
+[tool.poetry.group.image.dependencies]
+pillow = "^10.2.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
