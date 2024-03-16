@@ -76,6 +76,7 @@ class CSVToXMLConverter(BaseConverter, CSVReader, TextWriter):
         xml_text = ""
         return xml_text
 
+
 class XLXSToCSVConverter(BaseConverter, ExcelReader, CSVWriter):
     @classmethod
     def _get_supported_input_type(cls) -> FileType:

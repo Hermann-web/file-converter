@@ -11,7 +11,8 @@ import sys
 sys.path.append(".")
 
 
-from file_conv_scripts.converter_app import BaseConverterApp
+from file_conv_framework.converter_app import BaseConverterApp
+
 from file_conv_scripts.converters import (
     CSVToXMLConverter,
     JSONToCSVConverter,
@@ -28,7 +29,7 @@ class ConverterApp(BaseConverterApp):
         JSONToCSVConverter,
         CSVToXMLConverter,
         TXTToMDConverter,
-        XLXSToCSVConverter
+        XLXSToCSVConverter,
     ]
 
 

@@ -4,13 +4,8 @@ Main Module
 This module contains the main application logic.
 """
 
-import sys
 from pathlib import Path
 from typing import List, Tuple, Type
-
-# sys.path.append("../file-conv-framework")
-sys.path.append(".")
-
 
 from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
