@@ -8,17 +8,23 @@ from file_conv_framework.io_handler import (
     TextReader,
     TextWriter,
     XMLReader,
+    XMLWriter,
 )
 
 from file_conv_scripts.io_handlers import ExcelReader
 
 
-class TextToTextConverter(BaseConverter, TextReader, TextWriter):
-    def __init__(self):
-        super().__init__()
+class TextToTextConverter(BaseConverter):
+
+    file_reader = TextReader()
+    file_writer = TextWriter()
 
 
-class XMLToJSONConverter(BaseConverter, XMLReader, JSONWriter):
+class XMLToJSONConverter(BaseConverter):
+
+    file_reader = XMLReader()
+    file_writer = JSONWriter()
+
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.XML
@@ -33,6 +39,10 @@ class XMLToJSONConverter(BaseConverter, XMLReader, JSONWriter):
 
 
 class TXTToMDConverter(TextToTextConverter):
+
+    file_reader = TextReader()
+    file_writer = TextWriter()
+
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.TEXT
@@ -46,7 +56,11 @@ class TXTToMDConverter(TextToTextConverter):
         return md_content
 
 
-class JSONToCSVConverter(BaseConverter, JSONReader, CSVWriter):
+class JSONToCSVConverter(BaseConverter):
+
+    file_reader = JSONReader()
+    file_writer = CSVWriter()
+
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.JSON
@@ -58,10 +72,14 @@ class JSONToCSVConverter(BaseConverter, JSONReader, CSVWriter):
     def _convert(self, input_content: dict):
         json_data: dict = input_content
         columns, rows = ["a", "b"], [["a1", "b1"], ["a2", "b2"]]
-        return columns, rows
+        rows.insert(0, columns)
+        return rows
 
 
-class CSVToXMLConverter(BaseConverter, CSVReader, TextWriter):
+class CSVToXMLConverter(BaseConverter):
+
+    file_reader = CSVReader()
+    file_writer = XMLWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -77,7 +95,11 @@ class CSVToXMLConverter(BaseConverter, CSVReader, TextWriter):
         return xml_text
 
 
-class XLXSToCSVConverter(BaseConverter, ExcelReader, CSVWriter):
+class XLXSToCSVConverter(BaseConverter):
+
+    file_reader = ExcelReader()
+    file_writer = CSVWriter()
+
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
         return FileType.EXCEL

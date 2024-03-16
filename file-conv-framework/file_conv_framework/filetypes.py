@@ -142,7 +142,9 @@ class FileType(Enum):
         if not member1.is_true_filetype():
             return member2
 
-        assert member1 == member2
+        assert (
+            member1 == member2
+        ), f"file type from suffix ({member1}) mismatch with filepath from path({member2})"
 
         return member1
 

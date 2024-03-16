@@ -8,6 +8,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from file_conv_framework.filetypes import EmptySuffixError, FileType
+from file_conv_framework.io_handler import FileReader, FileWriter
 
 
 class ResolvedInputFile:
@@ -79,10 +80,18 @@ class ResolvedInputFile:
 
 
 class BaseConverter(ABC):
+
+    file_reader: FileReader = None
+    file_writer: FileWriter = None
+
     def __init__(self, input_file: ResolvedInputFile, output_file: ResolvedInputFile):
         self.input_file = input_file
         self.output_file = output_file
         self._check_file_types()
+
+        self.input_format = self.file_reader.input_format
+        self.output_format = self.file_reader.input_format
+        self.check_io_handlers()
 
     def convert(self):
         # log
@@ -93,7 +102,7 @@ class BaseConverter(ABC):
 
         # read file
         print("read file from io ...")
-        self.input_content = self._read_content(self.input_file)
+        self.input_content = self._read_content(self.input_file.file_path)
         print("done")
 
         # check
@@ -102,7 +111,7 @@ class BaseConverter(ABC):
         print("done")
 
         # convert file
-        print("convertin file ...")
+        print("converting file ...")
         self.output_content = self._convert(self.input_content)
         print("done")
 
@@ -113,7 +122,7 @@ class BaseConverter(ABC):
 
         # save file
         print("write content to io")
-        self._write_content(self.output_file, self.output_content)
+        self._write_content(self.output_file.file_path, self.output_content)
         print("done")
 
         # log
@@ -132,6 +141,13 @@ class BaseConverter(ABC):
 
         if self.output_file.file_type != self.get_supported_output_type():
             raise ValueError("Unsupported output file type")
+
+    def check_io_handlers(self):
+        if not isinstance(self.file_reader, FileReader):
+            raise ValueError("Invalid file reader")
+
+        if not isinstance(self.file_writer, FileWriter):
+            raise ValueError("Invalid file writer")
 
     @classmethod
     def get_input_type(cls):
@@ -169,19 +185,14 @@ class BaseConverter(ABC):
     def _convert(self, input_path: Path, output_path: Path):
         print("conversion method not implemented")
 
-    @abstractmethod
     def _read_content(self, input_path: Path):
-        print("read method not implemented")
-        return None
+        return self.file_reader._read_content(input_path)
 
-    @abstractmethod
     def _check_input_format(self, input_content):
-        print("input check method not implemented")
+        return self.file_reader._check_input_format(input_content)
 
-    @abstractmethod
     def _check_output_format(self, output_content):
-        print("output check method not implemented")
+        return self.file_writer._check_output_format(output_content)
 
-    @abstractmethod
     def _write_content(self, output_path: Path, output_content):
-        print("write method not implemented")
+        return self.file_writer._write_content(output_path, output_content)
