@@ -1,35 +1,82 @@
+"""
+Base Converter Module
+
+This module provides base classes for file conversion.
+"""
+
 from pathlib import Path
 from abc import ABC, abstractmethod
-from filetype_handler import FileType
 
-class InputFile:
+from file_conv_framework.filetypes import EmptySuffixError, FileType
+
+
+class ResolvedInputFile:
+    """
+    Represents a file with resolved file type.
+    """
+
     def __init__(self, file_path, file_type=None, add_suffix=False, read_content=False):
+        """
+        Initializes an instance of ResolvedInputFile.
+        
+        Args:
+            file_path (str): The path to the file.
+            file_type (FileType, optional): The type of the file. Defaults to None.
+            add_suffix (bool, optional): Whether to add suffix to the file path. Defaults to False.
+            read_content (bool, optional): Whether to read the content of the file. Defaults to False.
+        """
+        # Convert file_path to Path object
         self.file_path = Path(file_path)
-        suffix = self.file_path.suffix
 
-        if file_type:
-            self.file_type = FileType.from_suffix(file_type, raise_err=True)
-        else:
-            self.file_type = FileType.from_path(file_path, read_content=read_content, raise_err=True)
-        
-        if suffix:
-            # check the suffix
-            self.file_type.is_valid_suffix(suffix, raise_err=True)
-        elif add_suffix and self.file_type.is_true_filetype(): 
-            # add suffix to filepath
-            self.file_path = self.file_path.with_suffix(self.file_type.get_suffix())
-        
-        if read_content:
-            self.file_type.is_valid_mime_type(self.file_path, raise_err=True)
-    
+        # Resolve the file type
+        self.file_type = self.__resolve_filetype__(file_type, file_path, read_content)
+        assert self.file_type.is_true_filetype()
 
+        # Get the suffix corresponding to the resolved file type
+        self.suffix = self.file_type.get_suffix()
+
+        # Optionally add suffix to the file path
+        if add_suffix: 
+            self.file_path = self.file_path.with_suffix(self.suffix)
+
+    def __resolve_filetype__(self, file_type, file_path, read_content) -> FileType:
+        """
+        Resolve the file type based on the provided information.
+        
+        Args:
+            file_type (FileType or str, optional): The file type or file extension. Defaults to None.
+            file_path (str): The path to the file.
+            read_content (bool): Whether to read the content of the file.
+        
+        Returns:
+            FileType: The resolved file type.
+        """
+        if not file_type:
+            try:
+                file_type = FileType.from_path(file_path, read_content=read_content, raise_err=True)
+            except EmptySuffixError:
+                raise ValueError("filepath suffix is emtpy but file_type not set")
+            return file_type
+
+        resolved_file_type = FileType.from_suffix(file_type, raise_err=True)
+
+        file_type_from_path = FileType.from_path(file_path, read_content=read_content, raise_err=False)
+
+        if file_type_from_path.is_true_filetype():
+            assert file_type_from_path == resolved_file_type
+
+        return resolved_file_type
     
     def __str__(self):
+        """
+        Returns a string representation of the resolved file path.
+        """
         return str(Path(self.file_path).resolve())
 
 
+
 class BaseConverter(ABC):
-    def __init__(self, input_file: InputFile, output_file: InputFile):
+    def __init__(self, input_file: ResolvedInputFile, output_file: ResolvedInputFile):
         self.input_file = input_file
         self.output_file = output_file
         self._check_file_types()
@@ -69,10 +116,10 @@ class BaseConverter(ABC):
         print("succeed")
 
     def _check_file_types(self):
-        if not isinstance(self.input_file, InputFile):
+        if not isinstance(self.input_file, ResolvedInputFile):
             raise ValueError("Invalid input file")
 
-        if not isinstance(self.output_file, InputFile):
+        if not isinstance(self.output_file, ResolvedInputFile):
             raise ValueError("Invalid output file")
 
         if self.input_file.file_type != self.get_supported_input_type():

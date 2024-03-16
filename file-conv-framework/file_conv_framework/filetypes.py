@@ -1,7 +1,36 @@
+"""
+File Type Definitions Module
+
+This module defines enums and classes related to different file types.
+"""
+
 from enum import Enum
 from collections import namedtuple
 from pathlib import Path
-import magic # pip install python-magic
+
+from file_conv_framework.mimes import guess_mime_type_from_file
+
+class UnsupportedFileTypeError(Exception):
+    """Exception raised for unsupported file types."""
+
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+class EmptySuffixError(UnsupportedFileTypeError):
+    """Exception raised for unsupported file types."""
+
+    def __init__(self):
+        self.message = "Filetype not parsed from empty suffix."
+        super().__init__(self.message)
+
+class FileNotFoundError(Exception):
+    """Exception raised for file not found errors."""
+
+    def __init__(self, file_path):
+        self.file_path = file_path
+        message = f"File '{file_path}' does not exist."
+        super().__init__(message)
 
 class MismatchedException(Exception):
     def __init__(self, label, claimed_val, expected_vals):
@@ -22,7 +51,7 @@ class FileType(Enum):
     GIF = MimeType(['gif'], ['image/gif'])
     XML = MimeType(['xml'], ['application/xml', 'text/xml'])
     MARKDOWN = MimeType(['md'], ['text/markdown'], ['text/plain'])
-    TEXT = MimeType(['txt'], ['text/plain']) #pup it at bottom as many others filetytpes may be marked as text/plain too
+    TEXT = MimeType(['txt'], ['text/plain'])  # put it at bottom as many other filetypes may be marked as text/plain too
     UNHANDLED = MimeType([], [])
 
     @classmethod
@@ -30,7 +59,7 @@ class FileType(Enum):
         suffix = suffix.lower().lstrip('.')
         if not suffix:
             if raise_err:
-                raise ValueError("filetype not parse from empty suffix")
+                raise EmptySuffixError()
             else:
                 return cls.NOTYPE
         for member in cls:
@@ -38,26 +67,26 @@ class FileType(Enum):
                 return member
         
         if raise_err:
-            raise ValueError(f"unhandled filetype from suffix={suffix}")
+            raise UnsupportedFileTypeError(f"Unhandled filetype from suffix={suffix}")
         else:
             return cls.UNHANDLED
         
     @classmethod
     def from_mimetype(cls, file_path: str, raise_err: bool = False):
-        mime = magic.Magic(mime=True)
+        
         file = Path(file_path)
 
         if not file.exists():
-            raise FileNotFoundError(f"File '{file_path}' does not exist.")
+            raise FileNotFoundError(file_path)
         
-        file_mimetype = mime.from_file(str(file))
+        file_mimetype = guess_mime_type_from_file(str(file))
 
         for member in cls:
             if member.value.mime_types and file_mimetype in member.value.mime_types:
                 return member
         
         if raise_err:
-            raise ValueError(f"unhandled filetype from mimetype={file_mimetype}")
+            raise UnsupportedFileTypeError(f"Unhandled filetype from mimetype={file_mimetype}")
         else:
             return cls.UNHANDLED
     
@@ -95,8 +124,8 @@ class FileType(Enum):
         # if suffix didnt give a filetype, use the one from content
         if not member1.is_true_filetype():
             return member2
-        else:
-            assert member1==member2
+        
+        assert member1==member2
         
         return member1
     

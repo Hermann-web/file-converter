@@ -1,6 +1,7 @@
-from convertion_handler import BaseConverter
-from filetype_handler import FileType
-from io_handler import TextReader, TextWriter, CSVReader, CSVWriter, JSONReader, JSONWriter
+from file_conv_framework.base_converter import BaseConverter
+from file_conv_framework.filetypes import FileType
+from file_conv_framework.io_handler import TextReader, TextWriter, CSVReader, CSVWriter, JSONReader, JSONWriter, XMLReader
+
 
 
 class TextToTextConverter(BaseConverter, TextReader, TextWriter):
@@ -60,7 +61,7 @@ class CSVToXMLConverter(BaseConverter, CSVReader, TextWriter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.XML
     
-    def _convert(self, input_content:CSVToXMLConverter.input_format):
+    def _convert(self, input_content):
         columns, rows = ["a", "b"], [ ["a1", "b1"], ["a2", "b2"] ]
         xml_text = ""
         return xml_text
