@@ -1,2 +1,3 @@
-from file_conv_scripts.io_handlers.image import ImgToPillowReader, PillowToImgReader
+from file_conv_scripts.io_handlers.image import ImageToPillowReader, PillowToImageWriter
+from file_conv_scripts.io_handlers.pdf import PdfToPyPdfReader, PyPdfToPdfWriter
 from file_conv_scripts.io_handlers.spreadsheet import SpreadsheetToPandasReader

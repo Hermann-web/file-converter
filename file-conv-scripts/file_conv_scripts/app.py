@@ -14,25 +14,31 @@ from file_conv_scripts.converters import (
     JSONToCSVConverter,
     PDFToImageConverter,
     TXTToMDConverter,
-    XLXSToCSVConverter,
+    XLSXToCSVConverter,
     XMLToJSONConverter,
 )
 
 
 class ConverterApp(BaseConverterApp):
+    """
+    Application for file conversion.
+    """
 
     converters = [
         XMLToJSONConverter,
         JSONToCSVConverter,
         CSVToXMLConverter,
         TXTToMDConverter,
-        XLXSToCSVConverter,
+        XLSXToCSVConverter,
         ImageToPDFConverter,
         PDFToImageConverter,
     ]
 
 
 def main():
+    """
+    Main function to run the file conversion application.
+    """
     parser = argparse.ArgumentParser(description="File BaseConverter App")
     parser.add_argument("file", type=str, help="Path to the input file")
     parser.add_argument(

@@ -1,3 +1,9 @@
+"""
+Conversion Handlers
+
+This module provides classes for converting between different file formats. It includes concrete implementations of conversion classes for various file types.
+"""
+
 from pathlib import Path
 
 from file_conv_framework.base_converter import BaseConverter
@@ -12,24 +18,30 @@ from file_conv_framework.io_handler import (
     TxtToStrReader,
     XmlToStrReader,
 )
-from PIL import Image
-from PyPDF2 import PdfReader
+from PIL import Image as PillowImage
+from PyPDF2 import PdfReader, PdfWriter
 
 from file_conv_scripts.io_handlers import (
-    ImgToPillowReader,
-    PillowToImgReader,
+    ImageToPillowReader,
+    PdfToPyPdfReader,
+    PyPdfToPdfWriter,
     SpreadsheetToPandasReader,
 )
-from file_conv_scripts.io_handlers.pdf import PdfToPypdfReader
 
 
 class TextToTextConverter(BaseConverter):
+    """
+    Converts text files to text format.
+    """
 
     file_reader = TxtToStrReader()
     file_writer = StrToTxtWriter()
 
 
 class XMLToJSONConverter(BaseConverter):
+    """
+    Converts XML files to JSON format.
+    """
 
     file_reader = XmlToStrReader()
     file_writer = DictToJsonWriter()
@@ -48,9 +60,9 @@ class XMLToJSONConverter(BaseConverter):
 
 
 class TXTToMDConverter(TextToTextConverter):
-
-    file_reader = TxtToStrReader()
-    file_writer = StrToTxtWriter()
+    """
+    Converts text files to Markdown format.
+    """
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -66,6 +78,9 @@ class TXTToMDConverter(TextToTextConverter):
 
 
 class JSONToCSVConverter(BaseConverter):
+    """
+    Converts JSON files to CSV format.
+    """
 
     file_reader = JsonToDictReader()
     file_writer = ListToCsvWriter()
@@ -86,6 +101,9 @@ class JSONToCSVConverter(BaseConverter):
 
 
 class CSVToXMLConverter(BaseConverter):
+    """
+    Converts CSV files to XML format.
+    """
 
     file_reader = CsvToListReader()
     file_writer = StrToXmlWriter()
@@ -104,7 +122,10 @@ class CSVToXMLConverter(BaseConverter):
         return xml_text
 
 
-class XLXSToCSVConverter(BaseConverter):
+class XLSXToCSVConverter(BaseConverter):
+    """
+    Converts Excel files to CSV format.
+    """
 
     file_reader = SpreadsheetToPandasReader()
     file_writer = ListToCsvWriter()
@@ -125,7 +146,11 @@ class XLXSToCSVConverter(BaseConverter):
 
 
 class ImageToPDFConverter(BaseConverter):
-    file_reader = ImgToPillowReader()
+    """
+    Converts image files to PDF format.
+    """
+
+    file_reader = ImageToPillowReader()
     file_writer = None
 
     @classmethod
@@ -136,13 +161,45 @@ class ImageToPDFConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.PDF
 
-    def _convert(self, input_content: Image.Image, output_path: Path):
+    def _convert(self, input_content: PillowImage.Image, output_path: Path):
         input_content = input_content.convert("RGB")
         input_content.save(output_path)
 
 
+class ImageToPDFConverterWithPyPdf2(BaseConverter):
+    """
+    Converts image files to PDF format using PyPDF2.
+    """
+
+    file_reader = ImageToPillowReader()
+    file_writer = PyPdfToPdfWriter()
+
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.IMAGE
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.PDF
+
+    def _convert(self, input_content: PillowImage.Image):
+        # Create a new PDF document
+        pdf_writer = PdfWriter()
+
+        # Add the image as a page to the PDF document
+        width, height = input_content.size
+        pdf_page = pdf_writer.add_blank_page(width=width, height=height)
+        pdf_page.merge_page(input_content)
+
+        return pdf_writer
+
+
 class PDFToImageConverter(BaseConverter):
-    file_reader = PdfToPypdfReader()
+    """
+    Converts PDF files to image format.
+    """
+
+    file_reader = PdfToPyPdfReader()
     file_writer = None
 
     @classmethod
