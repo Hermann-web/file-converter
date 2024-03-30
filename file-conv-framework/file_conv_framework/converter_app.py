@@ -13,7 +13,7 @@ from file_conv_framework.filetypes import FileType
 
 class BaseConverterApp:
 
-    converters: List[BaseConverter] = []
+    converters: List[Type[BaseConverter]] = []
 
     def __init__(
         self,
@@ -31,6 +31,9 @@ class BaseConverterApp:
         )
         if not output_file_path:
             output_file_path = str(Path(input_file_path).with_suffix(""))
+            assert (
+                output_file_type is not None
+            ), "either output_file_path or output_file_type should be set "
         self.output_file = ResolvedInputFile(
             output_file_path,
             file_type=output_file_type,

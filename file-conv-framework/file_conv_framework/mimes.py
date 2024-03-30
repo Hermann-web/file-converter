@@ -13,7 +13,7 @@ class MimeGuesser:
             cls._instance.mime_guesser = None
 
             # Initialize the mime_guesser if magic module is available
-            if magic:
+            if magic is not None:
                 cls._instance.mime_guesser = magic.Magic(mime=True)
 
         return cls._instance
