@@ -1,12 +1,26 @@
 [tool.poetry]
 name = "file-conv-framework"
-version = "0.1.2a2"
-description = ""
-authors = ["hermann-web <hermannagossou6@gmail.com>"]
+version = "0.1.3"
+description = "A robust framework for handling file conversion tasks in Python"
+authors = ["Hermann Agosou <agossouhermann7@gmail.com>"]
 readme = "README.md"
+maintainers = [
+    "Hermann Agosou <agossouhermann7@gmail.com>"
+]
+license = "MIT"
+homepage = "https://hermann-web.github.io/blog/projects/introducing-two-new-packages-for-streamlining-file-conversions-in-python/"
+repository = "https://github.com/Hermann-web/file-converter"
+documentation = "https://github.com/Hermann-web/file-converter"
+keywords = ["file conversion", "data processing", "file formats"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.7"
 loguru = "^0.7.2"
 
 
