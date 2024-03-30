@@ -34,13 +34,15 @@ To use the `file_conv_scripts` package, follow these steps:
 
 ## Example Usage
 
-Here's an example demonstrating how to use the `file_conv_scripts` package for converting an XML file to JSON:
+Here's an example demonstrating how to use the `file_conv_scripts` package for converting an PNG file to PDF:
 
 ```bash
-python app.py input.xml -t XML -o output.json -ot JSON
+python file_conv_scripts/app.py examples/input/example.png -o examples/input/example.pdf
+# or 
+python file_conv_scripts/app.py examples/input/example.png -ot pdf
 ```
 
-This command executes the `ConverterApp` class, initiating the conversion process from an XML file to a JSON file using the appropriate converter classes.
+This command executes the `ConverterApp` class, initiating the conversion process from an PNG file to a PDF file using the appropriate converter classes.
 
 ## Contribution
 
