@@ -35,7 +35,7 @@ class FileWriter(ABC):
         pass
 
 
-class TextReader(FileReader):
+class TxtToStrReader(FileReader):
     input_format = str
 
     def _check_input_format(self, content: str):
@@ -45,7 +45,7 @@ class TextReader(FileReader):
         return input_path.read_text()
 
 
-class TextWriter(FileWriter):
+class StrToTxtWriter(FileWriter):
     output_format = str
 
     def _check_output_format(self, content: str):
@@ -55,7 +55,7 @@ class TextWriter(FileWriter):
         output_path.write_text(output_content)
 
 
-class CSVReader(FileReader):
+class CsvToListReader(FileReader):
     input_format = List[List[str]]
 
     def _check_input_format(self, content: List[List[str]]):
@@ -69,7 +69,7 @@ class CSVReader(FileReader):
             return [row for row in reader]
 
 
-class CSVWriter(FileWriter):
+class ListToCsvWriter(FileWriter):
     output_format = List[List[str]]
 
     def _check_output_format(self, content: List[List[str]]):
@@ -84,7 +84,7 @@ class CSVWriter(FileWriter):
                 writer.writerow(row)
 
 
-class JSONReader(FileReader):
+class JsonToDictReader(FileReader):
     input_format = Dict[str, Any]
 
     def _check_input_format(self, content: Dict[str, Any]):
@@ -94,7 +94,7 @@ class JSONReader(FileReader):
         return json.loads(input_path.read_text())
 
 
-class JSONWriter(FileWriter):
+class DictToJsonWriter(FileWriter):
     output_format = Dict[str, Any]
 
     def _check_output_format(self, content: Dict[str, Any]):
@@ -104,7 +104,7 @@ class JSONWriter(FileWriter):
         return output_path.write_text(json.dumps(output_content))
 
 
-class XMLReader(FileReader):
+class XmlToStrReader(FileReader):
     input_format = str
 
     def _check_input_format(self, content: str):
@@ -115,7 +115,7 @@ class XMLReader(FileReader):
         return input_path.read_text()
 
 
-class XMLWriter(FileWriter):
+class StrToXmlWriter(FileWriter):
     output_format = str
 
     def _check_output_format(self, content: str):

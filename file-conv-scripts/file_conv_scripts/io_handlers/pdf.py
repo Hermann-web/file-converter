@@ -4,7 +4,7 @@ import PyPDF2
 from file_conv_framework.io_handler import FileReader, FileWriter
 
 
-class PDFReader(FileReader):
+class PdfToPypdfReader(FileReader):
     input_format = PyPDF2.PdfFileReader
 
     def _check_input_format(self, content: PyPDF2.PdfFileReader):

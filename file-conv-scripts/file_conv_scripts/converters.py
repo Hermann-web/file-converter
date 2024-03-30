@@ -2,30 +2,30 @@ import PyPDF2
 from file_conv_framework.base_converter import BaseConverter
 from file_conv_framework.filetypes import FileType
 from file_conv_framework.io_handler import (
-    CSVReader,
-    CSVWriter,
-    JSONReader,
-    JSONWriter,
-    TextReader,
-    TextWriter,
-    XMLReader,
-    XMLWriter,
+    CsvToListReader,
+    ListToCsvWriter,
+    JsonToDictReader,
+    DictToJsonWriter,
+    TxtToStrReader,
+    StrToTxtWriter,
+    XmlToStrReader,
+    StrToXmlWriter,
 )
 from PIL import Image
 
-from file_conv_scripts.io_handlers import ExcelReader, ImageReader, ImageWriter
+from file_conv_scripts.io_handlers import SpreadsheetToPandasReader, ImgToPillowReader, PillowToImgReader
 
 
 class TextToTextConverter(BaseConverter):
 
-    file_reader = TextReader()
-    file_writer = TextWriter()
+    file_reader = TxtToStrReader()
+    file_writer = StrToTxtWriter()
 
 
 class XMLToJSONConverter(BaseConverter):
 
-    file_reader = XMLReader()
-    file_writer = JSONWriter()
+    file_reader = XmlToStrReader()
+    file_writer = DictToJsonWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -42,8 +42,8 @@ class XMLToJSONConverter(BaseConverter):
 
 class TXTToMDConverter(TextToTextConverter):
 
-    file_reader = TextReader()
-    file_writer = TextWriter()
+    file_reader = TxtToStrReader()
+    file_writer = StrToTxtWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -60,8 +60,8 @@ class TXTToMDConverter(TextToTextConverter):
 
 class JSONToCSVConverter(BaseConverter):
 
-    file_reader = JSONReader()
-    file_writer = CSVWriter()
+    file_reader = JsonToDictReader()
+    file_writer = ListToCsvWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -80,8 +80,8 @@ class JSONToCSVConverter(BaseConverter):
 
 class CSVToXMLConverter(BaseConverter):
 
-    file_reader = CSVReader()
-    file_writer = XMLWriter()
+    file_reader = CsvToListReader()
+    file_writer = StrToXmlWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -99,8 +99,8 @@ class CSVToXMLConverter(BaseConverter):
 
 class XLXSToCSVConverter(BaseConverter):
 
-    file_reader = ExcelReader()
-    file_writer = CSVWriter()
+    file_reader = SpreadsheetToPandasReader()
+    file_writer = ListToCsvWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -118,7 +118,7 @@ class XLXSToCSVConverter(BaseConverter):
 
 
 class ImageToPDFConverter(BaseConverter):
-    file_reader = ImageReader()
+    file_reader = ImgToPillowReader()
     file_writer = PDFWriter()
 
     @classmethod
@@ -136,8 +136,8 @@ class ImageToPDFConverter(BaseConverter):
 
 
 class PDFToImageConverter(BaseConverter):
-    file_reader = PDFReader()
-    file_writer = ImageWriter()
+    file_reader = PdfToPypdfReader()
+    file_writer = PillowToImgReader()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:

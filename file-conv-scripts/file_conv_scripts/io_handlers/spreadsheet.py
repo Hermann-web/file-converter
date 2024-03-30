@@ -4,7 +4,7 @@ import pandas as pd
 from file_conv_framework.io_handler import FileReader, FileWriter
 
 
-class ExcelReader(FileReader):
+class SpreadsheetToPandasReader(FileReader):
     input_format = pd.DataFrame
 
     def _check_input_format(self, content: pd.DataFrame):
@@ -14,7 +14,7 @@ class ExcelReader(FileReader):
         return pd.read_excel(input_path)
 
 
-class ExcelWriter(FileWriter):
+class PandasToSpreadsheetWriter(FileWriter):
     output_format = pd.DataFrame
 
     def _check_output_format(self, content: pd.DataFrame):

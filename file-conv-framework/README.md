@@ -26,13 +26,13 @@ The `file_conv_framework` package can be used independently to build custom file
 ### Example Usage
 
 ```python
-from file_conv_framework.io_handler import CSVReader, CSVWriter
+from file_conv_framework.io_handler import CsvToListReader, ListToCsvWriter
 from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
 
 class CSVToJSONConverter(BaseConverter):
-    file_reader = CSVReader()
-    file_writer = JSONWriter()
+    file_reader = CsvToListReader()
+    file_writer = DictToJsonWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:

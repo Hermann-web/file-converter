@@ -4,7 +4,7 @@ from file_conv_framework.io_handler import FileReader, FileWriter
 from PIL import Image
 
 
-class ImageReader(FileReader):
+class ImgToPillowReader(FileReader):
     input_format = Image.Image
 
     def _check_input_format(self, content: Image.Image):
@@ -14,7 +14,7 @@ class ImageReader(FileReader):
         return Image.open(input_path)
 
 
-class ImageWriter(FileWriter):
+class PillowToImgReader(FileWriter):
     output_format = Image.Image
 
     def _check_output_format(self, content: Image.Image):

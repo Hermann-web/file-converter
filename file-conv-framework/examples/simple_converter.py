@@ -7,10 +7,10 @@ sys.path.append(".")
 
 from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
-from file_conv_framework.io_handler import CSVWriter, FileReader
+from file_conv_framework.io_handler import ListToCsvWriter, FileReader
 
 
-class ExcelReader(FileReader):
+class SpreadsheetToPandasReader(FileReader):
     input_format = pd.DataFrame
 
     def _check_input_format(self, content: pd.DataFrame):
@@ -22,8 +22,8 @@ class ExcelReader(FileReader):
 
 class XLXSToCSVConverter(BaseConverter):
 
-    file_reader = ExcelReader()
-    file_writer = CSVWriter()
+    file_reader = SpreadsheetToPandasReader()
+    file_writer = ListToCsvWriter()
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
