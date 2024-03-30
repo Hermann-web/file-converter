@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "file-conv-framework"
-version = "0.1.4a0"
+version = "0.1.4a1"
 description = "A robust framework for handling file conversion tasks in Python"
 authors = ["Hermann Agosou <agossouhermann7@gmail.com>"]
 readme = "README.md"

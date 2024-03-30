@@ -100,6 +100,7 @@ class BaseConverterApp:
                 map(lambda x: f"{x[0]} -> {x[1]}", self.get_supported_conversions())
             )
             logger.error(f"Conversion not supported. Supported convertions are {_}")
+            return
 
         # instanciate the converter
         converter = converter_class(self.input_file, self.output_file)

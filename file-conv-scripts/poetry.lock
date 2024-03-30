@@ -73,13 +73,13 @@ files = [
 
 [[package]]
 name = "file-conv-framework"
-version = "0.1.3"
+version = "0.1.4a1"
 description = "A robust framework for handling file conversion tasks in Python"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "file_conv_framework-0.1.3-py3-none-any.whl", hash = "sha256:267f983d8835967e2a027b27e3b5285286324e8d9d5c85e928e9e6eb1f519aaf"},
-    {file = "file_conv_framework-0.1.3.tar.gz", hash = "sha256:f1e454242262749319edd524fedb4662b451f56cd8b33e17b823ac3f0b533cfc"},
+    {file = "file_conv_framework-0.1.4a1-py3-none-any.whl", hash = "sha256:0ae92db0823100315afb72f0818c7ea6befd92af9f2953b57fd25eeb7470812f"},
+    {file = "file_conv_framework-0.1.4a1.tar.gz", hash = "sha256:db798740640ab1729c8dcf782f7d940863fd5ae2e6763bf32563dedc21bd2477"},
 ]
 
 [package.dependencies]
@@ -409,6 +409,17 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-magic"
+version = "0.4.27"
+description = "File type identification using libmagic"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+files = [
+    {file = "python-magic-0.4.27.tar.gz", hash = "sha256:c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b"},
+    {file = "python_magic-0.4.27-py2.py3-none-any.whl", hash = "sha256:c212960ad306f700aa0d01e5d7a325d20548ff97eb9920dcd29513174f0294d3"},
+]
+
+[[package]]
 name = "pytz"
 version = "2024.1"
 description = "World timezone definitions, modern and historical"
@@ -480,4 +491,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "3be454b582388d211dc54be6e5062c7c175cf54d4cd4f68c13b0fc2527faba9c"
+content-hash = "b5ee6e4ef3e2a1a706d055ff46038165e25712b09bcc153ee0d7172e08a95f4e"
