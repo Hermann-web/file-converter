@@ -7,6 +7,7 @@ from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
 from file_conv_framework.io_handler import FileReader, StrToTxtWriter, TxtToStrReader
 
+
 class TXTToMDConverter(BaseConverter):
 
     file_reader = TxtToStrReader()

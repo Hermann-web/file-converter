@@ -11,6 +11,7 @@ from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
 from file_conv_framework.logger import logger
 
+
 class BaseConverterApp:
 
     converters: List[Type[BaseConverter]] = []

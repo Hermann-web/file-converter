@@ -11,6 +11,7 @@ from file_conv_framework.filetypes import EmptySuffixError, FileType
 from file_conv_framework.io_handler import FileReader, FileWriter
 from file_conv_framework.logger import logger
 
+
 class ResolvedInputFile:
     """
     Represents a file with resolved file type.

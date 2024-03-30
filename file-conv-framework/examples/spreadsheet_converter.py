@@ -7,7 +7,7 @@ sys.path.append(".")
 
 from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
-from file_conv_framework.io_handler import ListToCsvWriter, FileReader
+from file_conv_framework.io_handler import FileReader, ListToCsvWriter
 
 
 class SpreadsheetToPandasReader(FileReader):

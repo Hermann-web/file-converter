@@ -1,5 +1,6 @@
 from loguru import logger
 
+
 def setup_logger(log_file="logs/app.log"):
     """
     Setup logger configuration.
@@ -15,5 +16,6 @@ def setup_logger(log_file="logs/app.log"):
     #     sink=lambda message: print(message),  # Print log messages to console
     #     level="INFO",  # Log level
     # )
+
 
 setup_logger()  # Setup logger when the module is imported
