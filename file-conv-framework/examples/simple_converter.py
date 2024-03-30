@@ -26,6 +26,24 @@ class TXTToMDConverter(BaseConverter):
         return md_content
 
 
+class TXTToTXTConverter(BaseConverter):
+
+    file_reader = TxtToStrReader()
+    # no file writer means the converter will handle the saving
+
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.TEXT
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.TEXT
+
+    def _convert(self, input_content: str, output_path: Path):
+        md_content = input_content
+        return md_content
+
+
 if __name__ == "__main__":
     input_file_path = "examples/data/example.txt"
     output_file_path = "examples/data/example.md"
@@ -34,4 +52,7 @@ if __name__ == "__main__":
     output_file = ResolvedInputFile(output_file_path, add_suffix=True)
 
     converter = TXTToMDConverter(input_file, output_file)
+    converter.convert()
+
+    converter = TXTToTXTConverter(input_file, input_file)
     converter.convert()

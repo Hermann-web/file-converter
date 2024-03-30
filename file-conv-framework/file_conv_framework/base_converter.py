@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from file_conv_framework.filetypes import EmptySuffixError, FileType
-from file_conv_framework.io_handler import FileReader, FileWriter
+from file_conv_framework.io_handler import FileReader, FileWriter, SamePathReader
 from file_conv_framework.logger import logger
 
 
@@ -90,8 +90,8 @@ class BaseConverter(ABC):
         self.output_file = output_file
         self._check_file_types()
 
-        self.input_format = self.file_reader.input_format
-        self.output_format = self.file_reader.input_format
+        # self.input_format = self.file_reader.input_format
+        # self.output_format = self.file_writer.output_format
         self.check_io_handlers()
 
     def convert(self):
@@ -113,18 +113,22 @@ class BaseConverter(ABC):
 
         # convert file
         logger.info("converting file ...")
-        self.output_content = self._convert(self.input_content)
-        logger.info("done")
+        if self.file_writer is None:
+            logger.info("writer: false")
+            self._convert(
+                input_content=self.input_content, output_path=self.output_file.file_path
+            )
+            logger.info("done")
+        else:
+            logger.info("writer: true")
+            self.output_content = self._convert(input_content=self.input_content)
+            assert self._check_output_format(self.output_content)
+            logger.info("done")
 
-        # check
-        logger.info("check output content ...")
-        assert self._check_output_format(self.output_content)
-        logger.info("done")
-
-        # save file
-        logger.info("write content to io")
-        self._write_content(self.output_file.file_path, self.output_content)
-        logger.info("done")
+            # save file
+            logger.info("write content to io ...")
+            self._write_content(self.output_file.file_path, self.output_content)
+            logger.info("done")
 
         # log
         logger.info(f"output = {self.output_file}")
@@ -144,8 +148,14 @@ class BaseConverter(ABC):
             raise ValueError("Unsupported output file type")
 
     def check_io_handlers(self):
+        if self.file_reader is None:
+            self.file_reader = SamePathReader()
+
         if not isinstance(self.file_reader, FileReader):
             raise ValueError("Invalid file reader")
+
+        if self.file_writer is None:
+            return
 
         if not isinstance(self.file_writer, FileWriter):
             raise ValueError("Invalid file writer")
@@ -183,7 +193,7 @@ class BaseConverter(ABC):
         pass
 
     @abstractmethod
-    def _convert(self, input_path: Path, output_path: Path):
+    def _convert(self):
         logger.info("conversion method not implemented")
 
     def _read_content(self, input_path: Path):

@@ -35,6 +35,16 @@ class FileWriter(ABC):
         pass
 
 
+class SamePathReader(FileReader):
+    input_format = Path
+
+    def _check_input_format(self, content: Path):
+        return isinstance(content, Path)
+
+    def _read_content(self, input_path: Path) -> Path:
+        return input_path
+
+
 class TxtToStrReader(FileReader):
     input_format = str
 
