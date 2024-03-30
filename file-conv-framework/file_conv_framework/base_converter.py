@@ -1,7 +1,18 @@
 """
 Base Converter Module
 
-This module provides base classes for file conversion.
+This module serves as a foundation for creating file conversion utilities. It facilitates the development
+of file converters through abstract base classes, managing file types, and handling input and output files
+efficiently. The module is designed to be extendible, supporting various file formats and conversion strategies.
+
+Classes:
+- ResolvedInputFile: Manages file paths and types, resolving them as needed.
+- BaseConverter: An abstract base class for creating specific file format converters, enforcing the implementation
+                 of file conversion logic.
+
+Exceptions:
+- ValueError: Raised when file paths or types are incompatible or unsupported.
+- AssertionError: Ensured for internal consistency checks, confirming that file types match expected values.
 """
 
 from abc import ABC, abstractmethod
@@ -14,18 +25,18 @@ from file_conv_framework.logger import logger
 
 class ResolvedInputFile:
     """
-    Represents a file with resolved file type.
+    Handles resolving the file type of a given file, managing path adjustments and optional content reading.
     """
 
     def __init__(self, file_path, file_type=None, add_suffix=False, read_content=False):
         """
-        Initializes an instance of ResolvedInputFile.
+        Initializes an instance of ResolvedInputFile with options for type resolution and path modification.
 
         Args:
             file_path (str): The path to the file.
-            file_type (FileType, optional): The type of the file. Defaults to None.
-            add_suffix (bool, optional): Whether to add suffix to the file path. Defaults to False.
-            read_content (bool, optional): Whether to read the content of the file. Defaults to False.
+            file_type (FileType, optional): The explicit type of the file. If None, attempts to resolve based on the path or content.
+            add_suffix (bool, optional): Whether to append the resolved file type's suffix to the file path. Defaults to False.
+            read_content (bool, optional): Whether to read the file's content to assist in type resolution. Defaults to False.
         """
         # Convert file_path to Path object
         self.file_path = Path(file_path)
@@ -43,12 +54,12 @@ class ResolvedInputFile:
 
     def __resolve_filetype__(self, file_type, file_path, read_content) -> FileType:
         """
-        Resolve the file type based on the provided information.
+        Determines the file type, utilizing the provided type, file path, or content as needed.
 
         Args:
-            file_type (FileType or str, optional): The file type or file extension. Defaults to None.
-            file_path (str): The path to the file.
-            read_content (bool): Whether to read the content of the file.
+            file_type (FileType or str, optional): An explicit file type or extension.
+            file_path (str): The path to the file, used if file_type is not provided.
+            read_content (bool): Indicates if file content should be used to help resolve the file type.
 
         Returns:
             FileType: The resolved file type.
@@ -75,17 +86,30 @@ class ResolvedInputFile:
 
     def __str__(self):
         """
-        Returns a string representation of the resolved file path.
+        Returns the absolute file path as a string.
+
+        Returns:
+            str: The resolved file path.
         """
         return str(Path(self.file_path).resolve())
 
 
 class BaseConverter(ABC):
+    """
+    Abstract base class for file conversion, defining the template for input to output file conversion.
+    """
 
     file_reader: FileReader = None
     file_writer: FileWriter = None
 
     def __init__(self, input_file: ResolvedInputFile, output_file: ResolvedInputFile):
+        """
+        Sets up the converter with specified input and output files, ensuring compatibility.
+
+        Args:
+            input_file (ResolvedInputFile): The input file with resolved type.
+            output_file (ResolvedInputFile): The output file where the converted data will be saved.
+        """
         self.input_file = input_file
         self.output_file = output_file
         self._check_file_types()
@@ -95,6 +119,9 @@ class BaseConverter(ABC):
         self.check_io_handlers()
 
     def convert(self):
+        """
+        Orchestrates the file conversion process, including reading, converting, and writing the file.
+        """
         # log
         logger.info(
             f"Convertion of {self.get_supported_input_type()} to {self.get_supported_output_type()}..."
@@ -135,6 +162,9 @@ class BaseConverter(ABC):
         logger.info("succeed")
 
     def _check_file_types(self):
+        """
+        Validates that the provided files have acceptable and supported file types for conversion.
+        """
         if not isinstance(self.input_file, ResolvedInputFile):
             raise ValueError("Invalid input file")
 
@@ -148,6 +178,9 @@ class BaseConverter(ABC):
             raise ValueError("Unsupported output file type")
 
     def check_io_handlers(self):
+        """
+        Ensures that valid I/O handlers (file reader and writer) are set for the conversion.
+        """
         if self.file_reader is None:
             self.file_reader = SamePathReader()
 
@@ -170,6 +203,12 @@ class BaseConverter(ABC):
 
     @classmethod
     def get_supported_input_type(cls) -> FileType:
+        """
+        Defines the supported input file type for this converter.
+
+        Returns:
+            FileType: The file type supported for input.
+        """
         input_type = cls._get_supported_input_type()
         if not isinstance(input_type, FileType):
             raise ValueError("Invalid supported input file type")
@@ -177,6 +216,12 @@ class BaseConverter(ABC):
 
     @classmethod
     def get_supported_output_type(cls) -> FileType:
+        """
+        Defines the supported output file type for this converter.
+
+        Returns:
+            FileType: The file type supported for output.
+        """
         output_type = cls._get_supported_output_type()
         if not isinstance(output_type, FileType):
             raise ValueError("Invalid supported output file type")
@@ -185,15 +230,30 @@ class BaseConverter(ABC):
     @classmethod
     @abstractmethod
     def _get_supported_input_type(cls) -> FileType:
+        """
+        Abstract method to define the supported input file type by the converter.
+
+        Returns:
+            FileType: The supported input file type.
+        """
         pass
 
     @classmethod
     @abstractmethod
     def _get_supported_output_type(cls) -> FileType:
+        """
+        Abstract method to define the supported output file type by the converter.
+
+        Returns:
+            FileType: The supported output file type.
+        """
         pass
 
     @abstractmethod
     def _convert(self):
+        """
+        Abstract method to be implemented by subclasses to perform the actual file conversion process.
+        """
         logger.info("conversion method not implemented")
 
     def _read_content(self, input_path: Path):

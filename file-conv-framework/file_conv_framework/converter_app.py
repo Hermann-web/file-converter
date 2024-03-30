@@ -13,16 +13,28 @@ from file_conv_framework.logger import logger
 
 
 class BaseConverterApp:
+    """
+    Main application class responsible for managing file conversions.
+    """
 
     converters: List[Type[BaseConverter]] = []
 
     def __init__(
         self,
-        input_file_path,
-        input_file_type=None,
-        output_file_path=None,
-        output_file_type=None,
+        input_file_path: str,
+        input_file_type: FileType = None,
+        output_file_path: str = None,
+        output_file_type: FileType = None,
     ):
+        """
+        Initializes the BaseConverterApp instance.
+
+        Args:
+            input_file_path (str): The path to the input file.
+            input_file_type (FileType, optional): The type of the input file. Defaults to None.
+            output_file_path (str, optional): The path to the output file. Defaults to None.
+            output_file_type (FileType, optional): The type of the output file. Defaults to None.
+        """
         self._dict_converters: Dict[Tuple[FileType, FileType], Type[BaseConverter]] = {}
         self.input_file = ResolvedInputFile(
             input_file_path,
@@ -46,6 +58,15 @@ class BaseConverterApp:
             self.add_converter_pair(_conv_class)
 
     def add_converter_pair(self, converter_class: Type[BaseConverter]):
+        """
+        Adds a converter pair to the application.
+
+        Args:
+            converter_class (Type[BaseConverter]): The converter class to add.
+
+        Raises:
+            ValueError: If the converter class is invalid.
+        """
         # Check if the converter_class is a subclass of BaseConverter
         if not issubclass(converter_class, BaseConverter):
             raise ValueError("Invalid converter class")
@@ -56,9 +77,18 @@ class BaseConverterApp:
         ] = converter_class
 
     def get_supported_conversions(self) -> Tuple[Tuple[FileType]]:
+        """
+        Retrieves the supported conversions.
+
+        Returns:
+            Tuple[Tuple[FileType]]: A tuple of tuples representing supported conversions.
+        """
         return tuple(self._dict_converters.keys())
 
     def run(self):
+        """
+        Runs the conversion process.
+        """
         # get converter class
         converter_class = self._dict_converters.get(
             (self.input_file.file_type, self.output_file.file_type)
