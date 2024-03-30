@@ -1,3 +1,4 @@
+import PyPDF2
 from file_conv_framework.base_converter import BaseConverter
 from file_conv_framework.filetypes import FileType
 from file_conv_framework.io_handler import (
@@ -10,8 +11,9 @@ from file_conv_framework.io_handler import (
     XMLReader,
     XMLWriter,
 )
+from PIL import Image
 
-from file_conv_scripts.io_handlers import ExcelReader
+from file_conv_scripts.io_handlers import ExcelReader, ImageReader, ImageWriter
 
 
 class TextToTextConverter(BaseConverter):
@@ -113,3 +115,43 @@ class XLXSToCSVConverter(BaseConverter):
         # You may need to adjust this according to your specific use case
         csv_content = input_content.to_csv(index=False)
         return csv_content
+
+
+class ImageToPDFConverter(BaseConverter):
+    file_reader = ImageReader()
+    file_writer = PDFWriter()
+
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.IMAGE
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.PDF
+
+    def _convert(self, input_content: Image.Image):
+
+        with open(output_path, "wb") as f:
+            f.write(img2pdf.convert(input_content))
+
+
+class PDFToImageConverter(BaseConverter):
+    file_reader = PDFReader()
+    file_writer = ImageWriter()
+
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.PDF
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.IMAGE
+
+    def _convert(self, input_content: PyPDF2.PdfFileReader):
+        # Assuming you want to convert each page to an image
+        image_list = []
+        for page_num in range(input_content.numPages):
+            page = input_content.getPage(page_num)
+            img = page.to_image()
+            image_list.append(img)
+        return image_list[0]

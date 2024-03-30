@@ -25,6 +25,10 @@ pandas = "^2.2.1"
 [tool.poetry.group.image.dependencies]
 pillow = "^10.2.0"
 
+
+[tool.poetry.group.pdf.dependencies]
+pypdf2 = "^3.0.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
