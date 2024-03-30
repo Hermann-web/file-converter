@@ -1,18 +1,17 @@
 from pathlib import Path
 
-import PyPDF2
 from file_conv_framework.io_handler import FileReader, FileWriter
+from PyPDF2 import PdfReader
 
 
 class PdfToPypdfReader(FileReader):
-    input_format = PyPDF2.PdfFileReader
+    input_format = PdfReader
 
-    def _check_input_format(self, content: PyPDF2.PdfFileReader):
-        return isinstance(content, PyPDF2.PdfFileReader)
+    def _check_input_format(self, content: PdfReader):
+        return isinstance(content, PdfReader)
 
-    def _read_content(self, input_path: Path) -> PyPDF2.PdfFileReader:
-        with open(input_path, "rb") as file:
-            pdf_reader = PyPDF2.PdfFileReader(file)
+    def _read_content(self, input_path: Path) -> PdfReader:
+        pdf_reader = PdfReader(input_path)
         return pdf_reader
 
 

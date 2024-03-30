@@ -1,19 +1,26 @@
-import PyPDF2
+from pathlib import Path
+
 from file_conv_framework.base_converter import BaseConverter
 from file_conv_framework.filetypes import FileType
 from file_conv_framework.io_handler import (
     CsvToListReader,
-    ListToCsvWriter,
-    JsonToDictReader,
     DictToJsonWriter,
-    TxtToStrReader,
+    JsonToDictReader,
+    ListToCsvWriter,
     StrToTxtWriter,
-    XmlToStrReader,
     StrToXmlWriter,
+    TxtToStrReader,
+    XmlToStrReader,
 )
 from PIL import Image
+from PyPDF2 import PdfReader
 
-from file_conv_scripts.io_handlers import SpreadsheetToPandasReader, ImgToPillowReader, PillowToImgReader
+from file_conv_scripts.io_handlers import (
+    ImgToPillowReader,
+    PillowToImgReader,
+    SpreadsheetToPandasReader,
+)
+from file_conv_scripts.io_handlers.pdf import PdfToPypdfReader
 
 
 class TextToTextConverter(BaseConverter):
@@ -119,7 +126,7 @@ class XLXSToCSVConverter(BaseConverter):
 
 class ImageToPDFConverter(BaseConverter):
     file_reader = ImgToPillowReader()
-    file_writer = PDFWriter()
+    file_writer = None
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -129,15 +136,14 @@ class ImageToPDFConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.PDF
 
-    def _convert(self, input_content: Image.Image):
-
-        with open(output_path, "wb") as f:
-            f.write(img2pdf.convert(input_content))
+    def _convert(self, input_content: Image.Image, output_path: Path):
+        input_content = input_content.convert("RGB")
+        input_content.save(output_path)
 
 
 class PDFToImageConverter(BaseConverter):
     file_reader = PdfToPypdfReader()
-    file_writer = PillowToImgReader()
+    file_writer = None
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -147,11 +153,12 @@ class PDFToImageConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.IMAGE
 
-    def _convert(self, input_content: PyPDF2.PdfFileReader):
+    def _convert(self, input_content: PdfReader, output_path: Path):
         # Assuming you want to convert each page to an image
-        image_list = []
-        for page_num in range(input_content.numPages):
-            page = input_content.getPage(page_num)
-            img = page.to_image()
-            image_list.append(img)
-        return image_list[0]
+        page = input_content.pages[0]
+        output_path.mkdir()
+
+        for count, image_file_object in enumerate(page.images):
+            fpath = output_path / f"{count}-{image_file_object.name}"
+            with open(str(fpath), "wb") as fp:
+                fp.write(image_file_object.data)

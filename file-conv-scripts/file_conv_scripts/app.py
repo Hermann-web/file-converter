@@ -5,17 +5,14 @@ This module contains the main application logic.
 """
 
 import argparse
-import sys
-
-# sys.path.append("../file-conv-framework")
-sys.path.append(".")
-
 
 from file_conv_framework.converter_app import BaseConverterApp
 
 from file_conv_scripts.converters import (
     CSVToXMLConverter,
+    ImageToPDFConverter,
     JSONToCSVConverter,
+    PDFToImageConverter,
     TXTToMDConverter,
     XLXSToCSVConverter,
     XMLToJSONConverter,
@@ -30,6 +27,8 @@ class ConverterApp(BaseConverterApp):
         CSVToXMLConverter,
         TXTToMDConverter,
         XLXSToCSVConverter,
+        ImageToPDFConverter,
+        PDFToImageConverter,
     ]
 
 
