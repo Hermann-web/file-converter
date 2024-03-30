@@ -9,7 +9,7 @@ from typing import List, Tuple, Type
 
 from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
-
+from file_conv_framework.logger import logger
 
 class BaseConverterApp:
 
@@ -69,6 +69,6 @@ class BaseConverterApp:
                 _ = "\n " + "\n ".join(
                     map(lambda x: f"{x[0]} -> {x[1]}", self.get_supported_conversions())
                 )
-                print(f"Conversion not supported. Supported convertions are {_}")
+                logger.error(f"Conversion not supported. Supported convertions are {_}")
         else:
-            print("Output file path not provided")
+            logger.error("Output file path not provided")

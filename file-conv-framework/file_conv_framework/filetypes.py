@@ -112,7 +112,7 @@ class FileType(Enum):
     # def from_content(cls, path: Path, raise_err=False):
     #     file_path = Path(path)
     #     file_type = get_file_type(file_path)['f_type']
-    #     # print(file_type)
+    #     # logger.info(file_type)
     #     return file_type #text/plain, application/json, text/xml, image/png, application/csv, image/gif, ...
     #     member = cls.UNHANDLED
     #     return member

@@ -9,7 +9,7 @@ from pathlib import Path
 
 from file_conv_framework.filetypes import EmptySuffixError, FileType
 from file_conv_framework.io_handler import FileReader, FileWriter
-
+from file_conv_framework.logger import logger
 
 class ResolvedInputFile:
     """
@@ -95,39 +95,39 @@ class BaseConverter(ABC):
 
     def convert(self):
         # log
-        print(
+        logger.info(
             f"Convertion of {self.get_supported_input_type()} to {self.get_supported_output_type()}..."
         )
-        print(f"input = {self.input_file}")
+        logger.info(f"input = {self.input_file}")
 
         # read file
-        print("read file from io ...")
+        logger.info("read file from io ...")
         self.input_content = self._read_content(self.input_file.file_path)
-        print("done")
+        logger.info("done")
 
         # check
-        print("check input content ...")
+        logger.info("check input content ...")
         assert self._check_input_format(self.input_content)
-        print("done")
+        logger.info("done")
 
         # convert file
-        print("converting file ...")
+        logger.info("converting file ...")
         self.output_content = self._convert(self.input_content)
-        print("done")
+        logger.info("done")
 
         # check
-        print("check output content ...")
+        logger.info("check output content ...")
         assert self._check_output_format(self.output_content)
-        print("done")
+        logger.info("done")
 
         # save file
-        print("write content to io")
+        logger.info("write content to io")
         self._write_content(self.output_file.file_path, self.output_content)
-        print("done")
+        logger.info("done")
 
         # log
-        print(f"output = {self.output_file}")
-        print("succeed")
+        logger.info(f"output = {self.output_file}")
+        logger.info("succeed")
 
     def _check_file_types(self):
         if not isinstance(self.input_file, ResolvedInputFile):
@@ -183,7 +183,7 @@ class BaseConverter(ABC):
 
     @abstractmethod
     def _convert(self, input_path: Path, output_path: Path):
-        print("conversion method not implemented")
+        logger.info("conversion method not implemented")
 
     def _read_content(self, input_path: Path):
         return self.file_reader._read_content(input_path)
