@@ -59,9 +59,8 @@ class FileType(Enum):
         ],
     )
     JSON = MimeType(["json"], ["application/json"])
-    JPG = MimeType(["jpg"], ["image/jpeg"])
-    JPEG = MimeType(["jpeg"], ["image/jpeg"])
-    PNG = MimeType(["png"], ["image/png"])
+    PDF = MimeType(["pdf"], ["application/pdf"])
+    IMAGE = MimeType(["jpg", "jpeg", "png"], ["image/jpeg", "image/png"])
     GIF = MimeType(["gif"], ["image/gif"])
     XML = MimeType(["xml"], ["application/xml", "text/xml"])
     MARKDOWN = MimeType(["md"], ["text/markdown"], ["text/plain"])
@@ -196,7 +195,7 @@ def test_file_type_parsing():
     assert FileType.from_path(csv_path) == FileType.CSV
     assert FileType.from_path(excel_path) == FileType.EXCEL
     assert FileType.from_path(json_path) == FileType.JSON
-    assert FileType.from_path(img_path) == FileType.JPG
+    assert FileType.from_path(img_path) == FileType.IMAGE
     assert FileType.from_path(Path("no_extension")) == FileType.NOTYPE
     assert FileType.from_path(Path("unknown.xyz")) == FileType.UNHANDLED
 
@@ -221,8 +220,8 @@ def test_file_type_matching():
     assert FileType.JSON.is_valid_path(json_path)
     assert not FileType.JSON.is_valid_path(img_path)
 
-    assert FileType.JPG.is_valid_path(img_path)
-    assert not FileType.JPG.is_valid_path(text_path)
+    assert FileType.IMAGE.is_valid_path(img_path)
+    assert not FileType.IMAGE.is_valid_path(text_path)
 
     assert FileType.NOTYPE.is_valid_path(Path("no_extension"))
     assert not FileType.NOTYPE.is_valid_path(text_path)
@@ -232,6 +231,9 @@ def test_file_type_matching():
 
 
 if __name__ == "__main__":
+    import sys
+
+    sys.path.append(".")
     test_file_type_parsing()
     test_file_type_matching()
     print("All tests passed!")

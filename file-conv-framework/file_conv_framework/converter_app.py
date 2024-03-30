@@ -5,7 +5,7 @@ This module contains the main application logic.
 """
 
 from pathlib import Path
-from typing import List, Tuple, Type
+from typing import Dict, List, Tuple, Type
 
 from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
 from file_conv_framework.filetypes import FileType
@@ -23,7 +23,7 @@ class BaseConverterApp:
         output_file_path=None,
         output_file_type=None,
     ):
-        self._dict_converters = {}
+        self._dict_converters: Dict[Tuple[FileType, FileType], Type[BaseConverter]] = {}
         self.input_file = ResolvedInputFile(
             input_file_path,
             file_type=input_file_type,
@@ -59,17 +59,20 @@ class BaseConverterApp:
         return tuple(self._dict_converters.keys())
 
     def run(self):
-        if self.output_file:
-            converter_class = self._dict_converters.get(
-                (self.input_file.file_type, self.output_file.file_type)
+        # get converter class
+        converter_class = self._dict_converters.get(
+            (self.input_file.file_type, self.output_file.file_type)
+        )
+
+        # make sure a converter class exists
+        if converter_class is None:
+            _ = "\n " + "\n ".join(
+                map(lambda x: f"{x[0]} -> {x[1]}", self.get_supported_conversions())
             )
-            if converter_class:
-                converter = converter_class(self.input_file, self.output_file)
-                converter.convert()
-            else:
-                _ = "\n " + "\n ".join(
-                    map(lambda x: f"{x[0]} -> {x[1]}", self.get_supported_conversions())
-                )
-                logger.error(f"Conversion not supported. Supported convertions are {_}")
-        else:
-            logger.error("Output file path not provided")
+            logger.error(f"Conversion not supported. Supported convertions are {_}")
+
+        # instanciate the converter
+        converter = converter_class(self.input_file, self.output_file)
+
+        # run the convertion pipeline
+        converter.convert()

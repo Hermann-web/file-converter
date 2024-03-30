@@ -5,9 +5,15 @@ description = ""
 authors = ["hermann-web <hermannagossou6@gmail.com>"]
 readme = "README.md"
 
+[[tool.poetry.source]]
+name = "test-pypi"
+url = "https://test.pypi.org/simple/"
+priority = "explicit"
+
 [tool.poetry.dependencies]
 python = "^3.11"
-file-conv-framework = { path = "../file-conv-framework" }
+file-conv-framework  = {version = "0.1.2a2", source = "test-pypi"}
+
 
 [tool.poetry.group.mimetype.dependencies]
 python-magic = "^0.4.27"
@@ -17,6 +23,11 @@ python-magic = "^0.4.27"
 black = "^24.3.0"
 isort = "^5.13.2"
 
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 88
 
 [tool.poetry.group.dataframe.dependencies]
 pandas = "^2.2.1"
