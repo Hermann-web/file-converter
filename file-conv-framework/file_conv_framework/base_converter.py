@@ -188,59 +188,72 @@ class BaseConverter(ABC):
         """
         # log
         logger.info(
-            f"Convertion of {self.get_supported_input_type()} to {self.get_supported_output_type()}..."
+            f"Converting {self.input_file.path.name} ({self.get_supported_input_type()}) to {self.output_file.path.name} ({self.get_supported_output_type()})..."
         )
-        logger.info(f"input = {self.input_file}")
+        logger.info(f"Input file: {self.input_file.path}")
 
         # read file
-        logger.info("read file from io ...")
+        logger.info("Reading input file...")
         self.input_content = self._read_content(self.input_file.path)
-        logger.info("done")
+        logger.debug("Read complete")
 
         # check
-        logger.info("check input content ...")
-        assert self._check_input_format(self.input_content)
-        logger.info("done")
+        logger.info("Checking input content format...")
+        assert self._check_input_format(
+            self.input_content
+        ), f"Input content format check failed for {self.input_file.path.name}"
+        logger.debug("Input content format check passed")
 
         # convert file
-        logger.info("converting file ...")
+        logger.info("Converting file...")
         if self.file_writer is None:
-            logger.info("writer: false")
+            logger.info("Writing output directly")
             self._convert(
                 input_content=self.input_content, output_path=self.output_file.path
             )
-            logger.info("done")
+            logger.debug("Conversion complete")
         else:
-            logger.info("writer: true")
+            logger.info("Using output content")
             self.output_content = self._convert(input_content=self.input_content)
-            assert self._check_output_format(self.output_content)
-            logger.info("done")
+            assert self._check_output_format(
+                self.output_content
+            ), f"Output content format check failed for {self.output_file.path.name}"
+            logger.debug("Output content format check passed")
 
             # save file
-            logger.info("write content to io ...")
+            logger.info("Writing output file...")
             self._write_content(self.output_file.path, self.output_content)
-            logger.info("done")
+            logger.debug("Write complete")
 
-        # log
-        assert self.output_file.path.exists()
-        logger.info(f"output = {self.output_file}")
-        logger.info("succeed")
+        assert (
+            self.output_file.path.exists()
+        ), f"Output file {self.output_file.path.name} not found after conversion"
+        logger.info(f"Output file: {self.output_file.path}")
+        logger.debug("Conversion succeeded")
 
     def _check_file_types(self):
         """
         Validates that the provided files have acceptable and supported file types for conversion.
         """
         if not isinstance(self.input_file, ResolvedInputFile):
-            raise ValueError("Invalid input file")
+            raise ValueError(
+                f"Invalid input file. Expected: {ResolvedInputFile}. Actual: {type(self.input_file)}"
+            )
 
         if not isinstance(self.output_file, ResolvedInputFile):
-            raise ValueError("Invalid output file")
+            raise ValueError(
+                f"Invalid output file. Expected: {ResolvedInputFile}. Actual: {type(self.output_file)}"
+            )
 
         if self.input_file.file_type != self.get_supported_input_type():
-            raise ValueError("Unsupported input file type")
+            raise ValueError(
+                f"Unsupported input file type. Expected: {self.get_supported_input_type()}, Actual: {self.input_file.file_type}"
+            )
 
         if self.output_file.file_type != self.get_supported_output_type():
-            raise ValueError("Unsupported output file type")
+            raise ValueError(
+                f"Unsupported output file type. Expected: {self.get_supported_output_type()}, Actual: {self.output_file.file_type}"
+            )
 
     def check_io_handlers(self):
         """
@@ -319,7 +332,7 @@ class BaseConverter(ABC):
         """
         Abstract method to be implemented by subclasses to perform the actual file conversion process.
         """
-        logger.info("conversion method not implemented")
+        logger.info("Conversion method not implemented")
 
     def _read_content(self, input_path: Path):
         return self.file_reader._read_content(input_path)
