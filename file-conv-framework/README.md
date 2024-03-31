@@ -56,8 +56,8 @@ class CSVToJSONConverter(BaseConverter):
 # Usage
 input_file_path = "input.csv"
 output_file_path = "output.json"
-input_file = ResolvedInputFile(input_file_path)
-output_file = ResolvedInputFile(output_file_path)
+input_file = ResolvedInputFile(input_file_path, is_dir=False, should_exist=True)
+output_file = ResolvedInputFile(output_file_path, is_dir=False, should_exist=False, add_suffix=True)
 converter = CSVToJSONConverter(input_file, output_file)
 converter.convert()
 ```

@@ -38,6 +38,8 @@ class BaseConverterApp:
         self._dict_converters: Dict[Tuple[FileType, FileType], Type[BaseConverter]] = {}
         self.input_file = ResolvedInputFile(
             input_file_path,
+            is_dir=False,
+            should_exist=False,
             file_type=input_file_type,
             add_suffix=False,
             read_content=True,
@@ -49,6 +51,8 @@ class BaseConverterApp:
             ), "either output_file_path or output_file_type should be set "
         self.output_file = ResolvedInputFile(
             output_file_path,
+            is_dir=False,
+            should_exist=False,
             file_type=output_file_type,
             add_suffix=True,
             read_content=False,

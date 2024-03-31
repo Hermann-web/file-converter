@@ -47,8 +47,10 @@ if __name__ == "__main__":
     input_file_path = "examples/data/example.xlsx"
     output_file_path = "examples/data/example.csv"
 
-    input_file = ResolvedInputFile(input_file_path)
-    output_file = ResolvedInputFile(output_file_path, add_suffix=True)
+    input_file = ResolvedInputFile(input_file_path, is_dir=False, should_exist=True)
+    output_file = ResolvedInputFile(
+        output_file_path, is_dir=False, should_exist=False, add_suffix=True
+    )
 
     converter = XLXSToCSVConverter(input_file, output_file)
     converter.convert()

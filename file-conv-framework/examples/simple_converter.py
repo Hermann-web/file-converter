@@ -41,15 +41,17 @@ class TXTToTXTConverter(BaseConverter):
 
     def _convert(self, input_content: str, output_path: Path):
         md_content = input_content
-        return md_content
+        output_path.write_text(md_content)
 
 
 if __name__ == "__main__":
     input_file_path = "examples/data/example.txt"
     output_file_path = "examples/data/example.md"
 
-    input_file = ResolvedInputFile(input_file_path)
-    output_file = ResolvedInputFile(output_file_path, add_suffix=True)
+    input_file = ResolvedInputFile(input_file_path, is_dir=False, should_exist=True)
+    output_file = ResolvedInputFile(
+        output_file_path, is_dir=False, should_exist=False, add_suffix=True
+    )
 
     converter = TXTToMDConverter(input_file, output_file)
     converter.convert()

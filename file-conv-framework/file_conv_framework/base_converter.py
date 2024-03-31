@@ -25,32 +25,96 @@ from file_conv_framework.logger import logger
 
 class ResolvedInputFile:
     """
-    Handles resolving the file type of a given file, managing path adjustments and optional content reading.
+    Handles resolving the file type of a given file or folder, managing path adjustments and optional content reading.
     """
 
-    def __init__(self, file_path, file_type=None, add_suffix=False, read_content=False):
+    def __init__(
+        self,
+        path,
+        is_dir=None,
+        should_exist=True,
+        file_type=None,
+        add_suffix=False,
+        read_content=False,
+    ):
         """
         Initializes an instance of ResolvedInputFile with options for type resolution and path modification.
 
         Args:
-            file_path (str): The path to the file.
+            path (str): The path to the file or folder.
+            is_dir (bool, optional): Specifies if the path is a directory. If None, inferred using pathlib. Defaults to None.
+            exist (bool, optional): Specifies if the existence of the path is required. Defaults to True.
             file_type (FileType, optional): The explicit type of the file. If None, attempts to resolve based on the path or content.
             add_suffix (bool, optional): Whether to append the resolved file type's suffix to the file path. Defaults to False.
             read_content (bool, optional): Whether to read the file's content to assist in type resolution. Defaults to False.
         """
-        # Convert file_path to Path object
-        self.file_path = Path(file_path)
+        # Convert path to Path object
+        self.path = Path(path)
+
+        self._check_existence(should_exist)
+
+        # Infer if the path is a directory
+        if is_dir is None:
+            if not self.path.exists():
+                raise ValueError(
+                    f"When specified path '{self.path}' does not exist, then the 'is_dir' argument should be set."
+                )
+            is_dir = self.path.is_dir()
 
         # Resolve the file type
-        self.file_type = self.__resolve_filetype__(file_type, file_path, read_content)
-        assert self.file_type.is_true_filetype()
+        if is_dir:
+            self.file_type, self.suffix = self._resolve_directory_type()
+        else:
+            self.file_type, self.suffix = self._resolve_file_type(
+                file_type, read_content, add_suffix
+            )
+
+    def _check_existence(self, should_exist: bool):
+
+        if should_exist and not self.path.exists():
+            raise ValueError(
+                f"The specified file or folder '{self.path}' does not exist, but existence is required."
+            )
+
+        elif not should_exist and self.path.exists():
+            logger.warning(
+                f"The specified file or folder '{self.path}' does exist, but existence is not required."
+            )
+
+    def _resolve_directory_type(self):
+        """
+        Handles the case when the specified path is a directory.
+        """
+        if self.path.is_file():
+            raise ValueError(
+                f"The specified path '{self.path}' is a file, not a directory."
+            )
+        # Create directory if it doesn't exist
+        self.path.mkdir(exist_ok=True)
+        file_type = None
+        suffix = ""
+        return file_type, suffix
+
+    def _resolve_file_type(self, file_type, read_content, add_suffix):
+        """
+        Resolves the file type based on given parameters.
+
+        Args:
+            file_type (FileType or str, optional): An explicit file type or extension.
+            read_content (bool): Indicates if file content should be used to help resolve the file type.
+            add_suffix (bool): Whether to append the resolved file type's suffix to the file path.
+        """
+        file_type = self.__resolve_filetype__(file_type, str(self.path), read_content)
+        assert file_type.is_true_filetype()
 
         # Get the suffix corresponding to the resolved file type
-        self.suffix = self.file_type.get_suffix()
+        suffix = file_type.get_suffix()
 
         # Optionally add suffix to the file path
         if add_suffix:
-            self.file_path = self.file_path.with_suffix(self.suffix)
+            self.path = self.path.with_suffix(suffix)
+
+        return file_type, suffix
 
     def __resolve_filetype__(self, file_type, file_path, read_content) -> FileType:
         """
@@ -91,7 +155,7 @@ class ResolvedInputFile:
         Returns:
             str: The resolved file path.
         """
-        return str(Path(self.file_path).resolve())
+        return str(Path(self.path).resolve())
 
 
 class BaseConverter(ABC):
@@ -130,7 +194,7 @@ class BaseConverter(ABC):
 
         # read file
         logger.info("read file from io ...")
-        self.input_content = self._read_content(self.input_file.file_path)
+        self.input_content = self._read_content(self.input_file.path)
         logger.info("done")
 
         # check
@@ -143,7 +207,7 @@ class BaseConverter(ABC):
         if self.file_writer is None:
             logger.info("writer: false")
             self._convert(
-                input_content=self.input_content, output_path=self.output_file.file_path
+                input_content=self.input_content, output_path=self.output_file.path
             )
             logger.info("done")
         else:
@@ -154,10 +218,11 @@ class BaseConverter(ABC):
 
             # save file
             logger.info("write content to io ...")
-            self._write_content(self.output_file.file_path, self.output_content)
+            self._write_content(self.output_file.path, self.output_content)
             logger.info("done")
 
         # log
+        assert self.output_file.path.exists()
         logger.info(f"output = {self.output_file}")
         logger.info("succeed")
 
