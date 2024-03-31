@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "file-conv-framework"
-version = "0.1.4a1"
+version = "0.1.4a2"
 description = "A robust framework for handling file conversion tasks in Python"
-authors = ["Hermann Agosou <agossouhermann7@gmail.com>"]
+authors = ["Hermann Agossou <agossouhermann7@gmail.com>"]
 readme = "README.md"
 maintainers = [
-    "Hermann Agosou <agossouhermann7@gmail.com>"
+    "Hermann Agossou <agossouhermann7@gmail.com>"
 ]
 license = "MIT"
 homepage = "https://hermann-web.github.io/blog/projects/introducing-two-new-packages-for-streamlining-file-conversions-in-python/"

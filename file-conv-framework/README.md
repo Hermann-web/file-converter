@@ -19,11 +19,18 @@ The `file_conv_framework` package provides a robust framework for handling file 
 - **filetypes.py**: Defines enums and classes for representing different file types and handling file type validation.
 - **base_converter.py**: Implements the base converter class and the resolved input file class for performing file conversion tasks.
 
+## Installation
+
+```bash
+# with pip
+pip install -i https://test.pypi.org/simple/file-conv-framework
+# with poetry
+poetry add file-conv-framework --source test-pypi
+```
+
 ## Usage
 
 The `file_conv_framework` package can be used independently to build custom file conversion utilities or integrated into larger projects for handling file format transformations efficiently.
-
-### Example Usage
 
 ```python
 from file_conv_framework.io_handler import CsvToListReader, ListToCsvWriter
