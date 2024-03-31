@@ -43,7 +43,7 @@ class ResolvedInputFile:
         Args:
             path (str): The path to the file or folder.
             is_dir (bool, optional): Specifies if the path is a directory. If None, inferred using pathlib. Defaults to None.
-            exist (bool, optional): Specifies if the existence of the path is required. Defaults to True.
+            should_exist (bool, optional): Specifies if the existence of the path is required. Defaults to True.
             file_type (FileType, optional): The explicit type of the file. If None, attempts to resolve based on the path or content.
             add_suffix (bool, optional): Whether to append the resolved file type's suffix to the file path. Defaults to False.
             read_content (bool, optional): Whether to read the file's content to assist in type resolution. Defaults to False.
