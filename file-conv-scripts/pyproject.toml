@@ -13,6 +13,10 @@ priority = "explicit"
 [tool.poetry.dependencies]
 python = "^3.9"
 file-conv-framework = {version = "^0.1.4a1", source = "test-pypi"}
+python-magic = "^0.4.27"
+pillow = "^10.2.0"
+pandas = "^2.2.1"
+pypdf2 = "^3.0.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"
@@ -23,17 +27,6 @@ profile = "black"
 
 [tool.black]
 line-length = 88
-
-[tool.poetry.group.dataframe.dependencies]
-pandas = "^2.2.1"
-
-
-[tool.poetry.group.image.dependencies]
-pillow = "^10.2.0"
-
-
-[tool.poetry.group.pdf.dependencies]
-pypdf2 = "^3.0.1"
 
 [build-system]
 requires = ["poetry-core"]
