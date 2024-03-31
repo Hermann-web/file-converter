@@ -17,6 +17,7 @@ Exceptions:
 
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import List, Union
 
 from file_conv_framework.filetypes import EmptySuffixError, FileType
 from file_conv_framework.io_handler import FileReader, FileWriter, SamePathReader
@@ -157,6 +158,15 @@ class ResolvedInputFile:
         """
         return str(Path(self.path).resolve())
 
+    def __repr__(self):
+        """
+        Returns the absolute file path as a string.
+
+        Returns:
+            str: The resolved file path.
+        """
+        return f"{self.__class__.__name__}: {self.path.name}"
+
 
 class BaseConverter(ABC):
     """
@@ -166,15 +176,27 @@ class BaseConverter(ABC):
     file_reader: FileReader = None
     file_writer: FileWriter = None
 
-    def __init__(self, input_file: ResolvedInputFile, output_file: ResolvedInputFile):
+    def __init__(
+        self,
+        input_files: Union[ResolvedInputFile, List[ResolvedInputFile]],
+        output_file: ResolvedInputFile,
+    ):
         """
         Sets up the converter with specified input and output files, ensuring compatibility.
 
         Args:
-            input_file (ResolvedInputFile): The input file with resolved type.
+            input_files (Union[ResolvedInputFile, List[ResolvedInputFile]]): Either a single input file or a list of input files with resolved types.
             output_file (ResolvedInputFile): The output file where the converted data will be saved.
         """
-        self.input_file = input_file
+        if isinstance(input_files, ResolvedInputFile):
+            self.input_files = [input_files]
+        elif isinstance(input_files, list):
+            self.input_files = input_files
+        else:
+            raise TypeError(
+                "input_files must be either a ResolvedInputFile or a list of ResolvedInputFile objects"
+            )
+
         self.output_file = output_file
         self._check_file_types()
 
@@ -186,70 +208,75 @@ class BaseConverter(ABC):
         """
         Orchestrates the file conversion process, including reading, converting, and writing the file.
         """
+        logger.info("Starting conversion process...")
+
         # log
-        logger.info(
-            f"Converting {self.input_file.path.name} ({self.get_supported_input_type()}) to {self.output_file.path.name} ({self.get_supported_output_type()})..."
+        logger.debug(
+            f"Converting {self.input_files[0].path.name},+ ({self.get_supported_input_type()}) to {self.output_file.path.name} ({self.get_supported_output_type()})..."
         )
-        logger.info(f"Input file: {self.input_file.path}")
+        logger.debug(f"Input files ({len(self.input_files)}): {self.input_files}")
 
-        # read file
+        # Read all input files
         logger.info("Reading input file...")
-        self.input_content = self._read_content(self.input_file.path)
-        logger.debug("Read complete")
+        self._input_contents = [
+            self._read_content(input_file.path) for input_file in self.input_files
+        ]
 
-        # check
+        # Check input content format for all files
         logger.info("Checking input content format...")
-        assert self._check_input_format(
-            self.input_content
-        ), f"Input content format check failed for {self.input_file.path.name}"
+        for input_content, input_file in zip(self._input_contents, self.input_files):
+            logger.debug(f"Checking input content format for {input_file.path.name}...")
+            assert self._check_input_format(
+                input_content
+            ), f"Input content format check failed for {input_file.path.name}"
         logger.debug("Input content format check passed")
 
-        # convert file
-        logger.info("Converting file...")
+        # Convert input files to output content
+        logger.info("Converting files...")
         if self.file_writer is None:
             logger.info("Writing output directly")
             self._convert(
-                input_content=self.input_content, output_path=self.output_file.path
+                input_contents=self._input_contents, output_path=self.output_file.path
             )
             logger.debug("Conversion complete")
         else:
             logger.info("Using output content")
-            self.output_content = self._convert(input_content=self.input_content)
+            self.output_content = self._convert(input_contents=self._input_contents)
+
+            # Check output content format
             assert self._check_output_format(
                 self.output_content
-            ), f"Output content format check failed for {self.output_file.path.name}"
+            ), f"Output content format check failed after conversion"
             logger.debug("Output content format check passed")
-
             # save file
             logger.info("Writing output file...")
             self._write_content(self.output_file.path, self.output_content)
             logger.debug("Write complete")
-
         assert (
             self.output_file.path.exists()
         ), f"Output file {self.output_file.path.name} not found after conversion"
+
         logger.info(f"Output file: {self.output_file.path}")
-        logger.debug("Conversion succeeded")
+        logger.info("Conversion process complete.")
 
     def _check_file_types(self):
         """
         Validates that the provided files have acceptable and supported file types for conversion.
         """
-        if not isinstance(self.input_file, ResolvedInputFile):
-            raise ValueError(
-                f"Invalid input file. Expected: {ResolvedInputFile}. Actual: {type(self.input_file)}"
-            )
+        for input_file in self.input_files:
+            if not isinstance(input_file, ResolvedInputFile):
+                raise ValueError(
+                    f"Invalid input file. Expected: {ResolvedInputFile}. Actual: {type(input_file)}"
+                )
+            if input_file.file_type != self.get_supported_input_type():
+                raise ValueError(
+                    f"Unsupported input file type. Expected: {self.get_supported_input_type()}, Actual: {input_file.file_type}"
+                )
 
         if not isinstance(self.output_file, ResolvedInputFile):
             raise ValueError(
                 f"Invalid output file. Expected: {ResolvedInputFile}. Actual: {type(self.output_file)}"
             )
-
-        if self.input_file.file_type != self.get_supported_input_type():
-            raise ValueError(
-                f"Unsupported input file type. Expected: {self.get_supported_input_type()}, Actual: {self.input_file.file_type}"
-            )
-
         if self.output_file.file_type != self.get_supported_output_type():
             raise ValueError(
                 f"Unsupported output file type. Expected: {self.get_supported_output_type()}, Actual: {self.output_file.file_type}"

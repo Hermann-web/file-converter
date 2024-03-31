@@ -21,7 +21,7 @@ class BaseConverterApp:
 
     def __init__(
         self,
-        input_file_path: str,
+        input_file_paths: List[str],
         input_file_type: FileType = None,
         output_file_path: str = None,
         output_file_type: FileType = None,
@@ -30,25 +30,38 @@ class BaseConverterApp:
         Initializes the BaseConverterApp instance.
 
         Args:
-            input_file_path (str): The path to the input file.
+            input_file_paths (List[str]): List of paths to the input files.
             input_file_type (FileType, optional): The type of the input file. Defaults to None.
             output_file_path (str, optional): The path to the output file. Defaults to None.
             output_file_type (FileType, optional): The type of the output file. Defaults to None.
         """
         self._dict_converters: Dict[Tuple[FileType, FileType], Type[BaseConverter]] = {}
-        self.input_file = ResolvedInputFile(
-            input_file_path,
-            is_dir=False,
-            should_exist=False,
-            file_type=input_file_type,
-            add_suffix=False,
-            read_content=True,
-        )
+
+        if not isinstance(input_file_paths, list):
+            raise TypeError("input_file_paths sould be a list")
+        if len(input_file_paths) == 0:
+            raise ValueError("input_file_paths should not be a empty list")
+
+        self.input_files = [
+            ResolvedInputFile(
+                input_file_path,
+                is_dir=False,
+                should_exist=True,
+                file_type=input_file_type,
+                add_suffix=False,
+                read_content=True,
+            )
+            for input_file_path in input_file_paths
+        ]
+
+        self.input_file_type = self.input_files[0].file_type
+
         if not output_file_path:
-            output_file_path = str(Path(input_file_path).with_suffix(""))
+            output_file_path = str(Path(input_file_paths[0]).with_suffix(""))
             assert (
                 output_file_type is not None
             ), "either output_file_path or output_file_type should be set "
+
         self.output_file = ResolvedInputFile(
             output_file_path,
             is_dir=False,
@@ -57,6 +70,7 @@ class BaseConverterApp:
             add_suffix=True,
             read_content=False,
         )
+        self.output_file_type = self.output_file.file_type
 
         for _conv_class in self.converters:
             self.add_converter_pair(_conv_class)
@@ -95,7 +109,7 @@ class BaseConverterApp:
         """
         # get converter class
         converter_class = self._dict_converters.get(
-            (self.input_file.file_type, self.output_file.file_type)
+            (self.input_file_type, self.output_file_type)
         )
 
         # make sure a converter class exists
@@ -107,7 +121,7 @@ class BaseConverterApp:
             return
 
         # instanciate the converter
-        converter = converter_class(self.input_file, self.output_file)
+        converter = converter_class(self.input_files, self.output_file)
 
         # run the convertion pipeline
         converter.convert()

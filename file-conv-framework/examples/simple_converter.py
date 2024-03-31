@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from typing import List
 
 sys.path.append(".")
 
@@ -21,8 +22,8 @@ class TXTToMDConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.MARKDOWN
 
-    def _convert(self, input_content: str):
-        md_content = input_content
+    def _convert(self, input_contents: List[str]):
+        md_content = "\n".join(input_contents)
         return md_content
 
 
@@ -39,8 +40,8 @@ class TXTToTXTConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.TEXT
 
-    def _convert(self, input_content: str, output_path: Path):
-        md_content = input_content
+    def _convert(self, input_contents: List[str], output_path: Path):
+        md_content = "\n".join(input_contents)
         output_path.write_text(md_content)
 
 
