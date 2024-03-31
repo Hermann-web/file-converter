@@ -20,6 +20,26 @@ class ConverterApp(BaseConverterApp):
 
 
 def main():
+    """
+    # Usage Example
+
+    ## Usage Example of TXTToTXTConverter to merge txt files
+    
+    ```bash
+    find examples -type f -name "*.txt" | xargs python examples/cli_app_example.py -o examples/output -ot txt
+    # or
+    python examples/cli_app_example.py examples/cli_app_example.py examples/data/example.txt -o examples/output -ot txt
+    # or 
+    python examples/cli_app_example.py examples/data/example.txt  examples/data/example2.txt -o examples/output/example.txt
+    ```
+
+    ## Usage Examples of TXTToMDConverter to merge txt files into a md file
+
+    ```bash
+    find examples -type f -name "*.txt" | xargs python examples/cli_app_example.py -o examples/output.md
+    ```
+
+    """
     parser = argparse.ArgumentParser(description="File BaseConverter App")
     parser.add_argument("files", nargs="+", type=str, help="Paths to the input files")
     parser.add_argument(

@@ -40,9 +40,9 @@ class TXTToTXTConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.TEXT
 
-    def _convert(self, input_contents: List[str], output_path: Path):
+    def _convert(self, input_contents: List[str], output_file: Path, **kwargs):
         md_content = "\n".join(input_contents)
-        output_path.write_text(md_content)
+        output_file.write_text(md_content)
 
 
 if __name__ == "__main__":

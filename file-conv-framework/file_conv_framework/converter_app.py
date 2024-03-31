@@ -55,19 +55,23 @@ class BaseConverterApp:
         ]
 
         self.input_file_type = self.input_files[0].file_type
+        assert self.input_file_type.is_true_filetype()
 
         if not output_file_path:
             output_file_path = str(Path(input_file_paths[0]).with_suffix(""))
+            add_suffix_to_output_path = True
             assert (
                 output_file_type is not None
             ), "either output_file_path or output_file_type should be set "
+        else:
+            add_suffix_to_output_path = False
 
         self.output_file = ResolvedInputFile(
             output_file_path,
-            is_dir=False,
+            is_dir=None,
             should_exist=False,
             file_type=output_file_type,
-            add_suffix=True,
+            add_suffix=add_suffix_to_output_path,
             read_content=False,
         )
         self.output_file_type = self.output_file.file_type
