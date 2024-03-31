@@ -37,9 +37,13 @@ To use the `file_conv_scripts` package, follow these steps:
 Here's an example demonstrating how to use the `file_conv_scripts` package for converting an PNG file to PDF:
 
 ```bash
-python file_conv_scripts/app.py examples/input/example.png -o examples/input/example.pdf
-# or 
-python file_conv_scripts/app.py examples/input/example.png -ot pdf
+# Install the package along with its dependencies (if not already installed)
+pip install -i https://test.pypi.org/simple/file-conv-scripts
+
+# Run the converter script
+fileconv examples/input/example.png -o examples/output/example.pdf
+# or
+fileconv examples/input/example.png -ot pdf
 ```
 
 This command executes the `ConverterApp` class, initiating the conversion process from an PNG file to a PDF file using the appropriate converter classes.

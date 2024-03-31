@@ -38,3 +38,6 @@ pypdf2 = "^3.0.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+fileconv = "file_conv_scripts.app:main"
