@@ -13,7 +13,7 @@ from PyPDF2 import PdfReader, PdfWriter
 
 class PdfToPyPdfReader(FileReader):
     """
-    Reads a PDF file and returns a PyPDF2 PdfReader object.
+    Reads a PDF file and returns a [PyPDF2 PdfReader object](https://pypdf2.readthedocs.io/en/3.0.0/modules/PdfReader.html).
     """
 
     input_format = PdfReader
@@ -46,7 +46,7 @@ class PdfToPyPdfReader(FileReader):
 
 class PyPdfToPdfWriter(FileWriter):
     """
-    Writes a canvas.Canvas object to a PDF file.
+    Writes the provided [PyPDF2 PdfWriter object](https://pypdf2.readthedocs.io/en/3.0.0/modules/PdfWriter.html)
     """
 
     output_format = PdfWriter

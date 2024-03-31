@@ -240,7 +240,7 @@ class FileType(Enum):
                  Returns an empty string if the FileType does not have an associated extension.
         """
         ext = self.value.extensions[0] if self.is_true_filetype() else ""
-        return "." + ext
+        return f".{ext}"
 
     def is_valid_suffix(self, suffix: str, raise_err=False):
         """

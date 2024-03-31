@@ -22,9 +22,9 @@ class BaseConverterApp:
     def __init__(
         self,
         input_file_paths: List[str],
-        input_file_type: FileType = None,
+        input_file_type: str = None,
         output_file_path: str = None,
-        output_file_type: FileType = None,
+        output_file_type: str = None,
     ):
         """
         Initializes the BaseConverterApp instance.
@@ -115,9 +115,11 @@ class BaseConverterApp:
         # make sure a converter class exists
         if converter_class is None:
             _ = "\n " + "\n ".join(
-                map(lambda x: f"{x[0]} -> {x[1]}", self.get_supported_conversions())
+                map(lambda x: f"* {x[0]} -> {x[1]}", self.get_supported_conversions())
             )
-            logger.error(f"Conversion not supported. Supported convertions are {_}")
+            logger.error(
+                f"Conversion from {self.input_file_type} to {self.output_file_type} not supported. Supported convertions are : {_}"
+            )
             return
 
         # instanciate the converter

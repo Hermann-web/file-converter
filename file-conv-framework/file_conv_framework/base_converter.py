@@ -31,12 +31,12 @@ class ResolvedInputFile:
 
     def __init__(
         self,
-        path,
-        is_dir=None,
-        should_exist=True,
-        file_type=None,
-        add_suffix=False,
-        read_content=False,
+        path: Path,
+        is_dir: bool = None,
+        should_exist: bool = True,
+        file_type: str = None,
+        add_suffix: bool = False,
+        read_content: bool = False,
     ):
         """
         Initializes an instance of ResolvedInputFile with options for type resolution and path modification.
@@ -45,7 +45,7 @@ class ResolvedInputFile:
             path (str): The path to the file or folder.
             is_dir (bool, optional): Specifies if the path is a directory. If None, inferred using pathlib. Defaults to None.
             should_exist (bool, optional): Specifies if the existence of the path is required. Defaults to True.
-            file_type (FileType, optional): The explicit type of the file. If None, attempts to resolve based on the path or content.
+            file_type (str, optional): The explicit type of the file. If None, attempts to resolve to a FileType object based on the path or content.
             add_suffix (bool, optional): Whether to append the resolved file type's suffix to the file path. Defaults to False.
             read_content (bool, optional): Whether to read the file's content to assist in type resolution. Defaults to False.
         """
@@ -96,7 +96,7 @@ class ResolvedInputFile:
         suffix = ""
         return file_type, suffix
 
-    def _resolve_file_type(self, file_type, read_content, add_suffix):
+    def _resolve_file_type(self, file_type: str, read_content: bool, add_suffix: bool):
         """
         Resolves the file type based on given parameters.
 
@@ -117,7 +117,9 @@ class ResolvedInputFile:
 
         return file_type, suffix
 
-    def __resolve_filetype__(self, file_type, file_path, read_content) -> FileType:
+    def __resolve_filetype__(
+        self, file_type: str, file_path: Path, read_content: bool
+    ) -> FileType:
         """
         Determines the file type, utilizing the provided type, file path, or content as needed.
 
@@ -212,7 +214,7 @@ class BaseConverter(ABC):
 
         # log
         logger.debug(
-            f"Converting {self.input_files[0].path.name},+ ({self.get_supported_input_type()}) to {self.output_file.path.name} ({self.get_supported_output_type()})..."
+            f"Converting {self.input_files[0].path.name} and {len(self.input_files)-1} more ({self.get_supported_input_type()}) to {self.output_file.path.name} ({self.get_supported_output_type()})..."
         )
         logger.debug(f"Input files ({len(self.input_files)}): {self.input_files}")
 
