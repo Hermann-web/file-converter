@@ -215,6 +215,7 @@ class BaseConverter(ABC):
 
     file_reader: FileReader = None
     file_writer: FileWriter = None
+    folder_as_output: bool = None
 
     def __init__(
         self,
@@ -271,31 +272,17 @@ class BaseConverter(ABC):
             ), f"Input content format check failed for {input_file.path.name}"
         logger.debug("Input content format check passed")
 
-        output_path = self.output_file.path
-        if output_path.is_dir():
-            output_folder = output_path
-            suffix = self.get_supported_output_type().get_suffix()
-            output_file = (output_path / f"fileconv-output").with_suffix(suffix)
-        else:
-            output_folder = None
-            output_file = output_path
-        logger.info(f"output_path = {output_path}")
+        kwargs, output_path = self._get_convertion_kwargs(self.output_file.path)
 
         # Convert input files to output content
         logger.info("Converting files...")
         if self.file_writer is None:
             logger.info("Writing output directly")
-            self._convert(
-                input_contents=self._input_contents,
-                output_file=output_file,
-                output_folder=output_folder,
-            )
+            self._convert(input_contents=self._input_contents, **kwargs)
             logger.debug("Conversion complete")
         else:
-            assert output_file is not None
             logger.info("Using output content")
             self.output_content = self._convert(input_contents=self._input_contents)
-
             # Check output content format
             assert self._check_output_format(
                 self.output_content
@@ -312,6 +299,20 @@ class BaseConverter(ABC):
 
         logger.info(f"Output file: {output_path.resolve()}")
         logger.info("Conversion process complete.")
+
+    def _get_convertion_kwargs(self, output_path: Path):
+        kwargs = {}
+        if self.folder_as_output:
+            assert (
+                output_path.is_dir()
+            ), f"output_path is file while a folder is required for this conversion"
+            kwargs["output_folder"] = output_path
+        else:
+            if output_path.is_dir():
+                suffix = self.get_supported_output_type().get_suffix()
+                output_path = (output_path / f"fileconv-output").with_suffix(suffix)
+            kwargs["output_file"] = output_path
+        return kwargs, output_path
 
     def _check_file_types(self):
         """
@@ -347,10 +348,16 @@ class BaseConverter(ABC):
             raise ValueError("Invalid file reader")
 
         if self.file_writer is None:
+            if self.folder_as_output is None:
+                raise ValueError(
+                    f"the class attribute folder_as_output should be set for your converter {self.__class__.__name__}"
+                )
             return
 
         if not isinstance(self.file_writer, FileWriter):
             raise ValueError("Invalid file writer")
+
+        self.folder_as_output = False
 
     @classmethod
     def get_input_type(cls):

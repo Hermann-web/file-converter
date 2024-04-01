@@ -73,13 +73,13 @@ files = [
 
 [[package]]
 name = "file-conv-framework"
-version = "0.1.4a4"
+version = "0.1.4"
 description = "A robust framework for handling file conversion tasks in Python"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "file_conv_framework-0.1.4a4-py3-none-any.whl", hash = "sha256:d7a5dccffb65eaba9f08916ebaff9d7b696caf7e4d5c3dedad355a1d21c646b8"},
-    {file = "file_conv_framework-0.1.4a4.tar.gz", hash = "sha256:bc675d9236194c65857c20a516ae8b7ee2f9897b8d1e616d01e7e8daa4679ae1"},
+    {file = "file_conv_framework-0.1.4-py3-none-any.whl", hash = "sha256:589bec3acaa5b23bea3017801fa535696dd4d964bd3318a2402b58551b5a2104"},
+    {file = "file_conv_framework-0.1.4.tar.gz", hash = "sha256:c02e3a8368def6f12f059b4b7b3bf58590c34ca5cb8621709b03f7896d45d945"},
 ]
 
 [package.dependencies]
@@ -491,4 +491,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "4dda714275cb6a32eabdf217bcc60b7ff82a41dfa3c0ba653d4b383b215263e0"
+content-hash = "3a8229a5243a8f24c2d359239437731a8ac9d03cc204e860efc2d12aa762932c"

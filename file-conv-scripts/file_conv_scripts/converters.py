@@ -155,6 +155,7 @@ class ImageToPDFConverter(BaseConverter):
 
     file_reader = ImageToPillowReader()
     file_writer = None
+    folder_as_output = False
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -164,9 +165,7 @@ class ImageToPDFConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.PDF
 
-    def _convert(
-        self, input_contents: List[PillowImage.Image], output_file: Path, **kwargs
-    ):
+    def _convert(self, input_contents: List[PillowImage.Image], output_file: Path):
         images = input_contents
 
         # Create a list of all the input images and convert them to RGB
@@ -237,6 +236,7 @@ class PDFToImageConverter(BaseConverter):
 
     file_reader = PdfToPyPdfReader()
     file_writer = None
+    folder_as_output = True
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -246,7 +246,7 @@ class PDFToImageConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.IMAGE
 
-    def _convert(self, input_contents: List[PdfReader], output_folder: Path, **kwargs):
+    def _convert(self, input_contents: List[PdfReader], output_folder: Path):
         # Assuming you want to convert each page to an image
         pass
 
@@ -258,6 +258,7 @@ class PDFToImageExtractor(BaseConverter):
 
     file_reader = PdfToPyPdfReader()
     file_writer = None
+    folder_as_output = True
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -267,7 +268,7 @@ class PDFToImageExtractor(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.IMAGE
 
-    def _convert(self, input_contents: List[PdfReader], output_folder: Path, **kwargs):
+    def _convert(self, input_contents: List[PdfReader], output_folder: Path):
         """
         - read more [here](https://pypdf2.readthedocs.io/en/3.0.0/user/extract-images.html)
         """

@@ -31,6 +31,8 @@ class TXTToTXTConverter(BaseConverter):
 
     file_reader = TxtToStrReader()
     # no file writer means the converter will handle the saving
+    folder_as_output = False
+    # set it to False to mention, a file (output_file) is going to be save instead of a folder (output_folder)
 
     @classmethod
     def _get_supported_input_type(cls) -> FileType:
@@ -40,7 +42,7 @@ class TXTToTXTConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.TEXT
 
-    def _convert(self, input_contents: List[str], output_file: Path, **kwargs):
+    def _convert(self, input_contents: List[str], output_file: Path):
         md_content = "\n".join(input_contents)
         output_file.write_text(md_content)
 

@@ -47,7 +47,7 @@ When you can set a folder as output_path then a filetype, the folder would be cr
 For example, the script below will save the file `examples/output/fileconv-output.md`
 
 ```bash
-find examples -type f -name "*.txt" | xargs python examples/cli_app_example.py -o examples/output -ot md
+find examples/data -type f -name "*.txt" | xargs python examples/cli_app_example.py -o examples/output -ot md
 ```
 
 ### setting `-o` as a filepath

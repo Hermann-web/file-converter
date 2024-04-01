@@ -55,10 +55,10 @@ This command executes the `ConverterApp` class, initiating the conversion proces
 You can set, the output argument as a folder. So, the png files would be in that folder. Using a filepath instead of a folder may yield an error.
 
 ```bash
-fileconv 'path/to/my/file.pdf' -o path/to/my/folder -ot png
+fileconv examples/input/example.pdf -o examples/output -ot png
 ```
 
-This command will write png files into the folder mentioned
+This command will write png files into the `examples/output` as mentioned
 
 ## Contribution
 

@@ -49,7 +49,7 @@ class CSVToJSONConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.JSON
 
-    def _convert(self, input_path: Path, output_file: Path, output_folder:Path):
+    def _convert(self, input_path: Path, output_file: Path):
         # Implement conversion logic from CSV to JSON
         pass
 
