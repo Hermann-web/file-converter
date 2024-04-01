@@ -24,12 +24,12 @@ def main():
     # Usage Example
 
     ## Usage Example of TXTToTXTConverter to merge txt files
-    
+
     ```bash
     find examples -type f -name "*.txt" | xargs python examples/cli_app_example.py -o examples/output -ot txt
     # or
     python examples/cli_app_example.py examples/cli_app_example.py examples/data/example.txt -o examples/output -ot txt
-    # or 
+    # or
     python examples/cli_app_example.py examples/data/example.txt  examples/data/example2.txt -o examples/output/example.txt
     ```
 

@@ -1,7 +1,6 @@
 # Table of Contents
 
 * [file\_conv\_scripts](#file_conv_scripts)
-* [file\_conv\_scripts.modules.img\_to\_pdf](#file_conv_scripts.modules.img_to_pdf)
 * [file\_conv\_scripts.io\_handlers](#file_conv_scripts.io_handlers)
 * [file\_conv\_scripts.io\_handlers.pdf](#file_conv_scripts.io_handlers.pdf)
   * [PdfToPyPdfReader](#file_conv_scripts.io_handlers.pdf.PdfToPyPdfReader)
@@ -25,14 +24,11 @@
   * [ImageToPDFConverter](#file_conv_scripts.converters.ImageToPDFConverter)
   * [ImageToPDFConverterWithPyPdf2](#file_conv_scripts.converters.ImageToPDFConverterWithPyPdf2)
   * [PDFToImageConverter](#file_conv_scripts.converters.PDFToImageConverter)
+  * [PDFToImageExtractor](#file_conv_scripts.converters.PDFToImageExtractor)
 
 <a id="file_conv_scripts"></a>
 
 # file\_conv\_scripts
-
-<a id="file_conv_scripts.modules.img_to_pdf"></a>
-
-# file\_conv\_scripts.modules.img\_to\_pdf
 
 <a id="file_conv_scripts.io_handlers"></a>
 
@@ -55,7 +51,7 @@ and concrete implementations for converting between PDF files and PyPDF2 PdfRead
 class PdfToPyPdfReader(FileReader)
 ```
 
-Reads a PDF file and returns a PyPDF2 PdfReader object.
+Reads a PDF file and returns a [PyPDF2 PdfReader object](https://pypdf2.readthedocs.io/en/3.0.0/modules/PdfReader.html).
 
 <a id="file_conv_scripts.io_handlers.pdf.PyPdfToPdfWriter"></a>
 
@@ -65,7 +61,7 @@ Reads a PDF file and returns a PyPDF2 PdfReader object.
 class PyPdfToPdfWriter(FileWriter)
 ```
 
-Writes a canvas.Canvas object to a PDF file.
+Writes the provided [PyPDF2 PdfWriter object](https://pypdf2.readthedocs.io/en/3.0.0/modules/PdfWriter.html)
 
 <a id="file_conv_scripts.io_handlers.spreadsheet"></a>
 
@@ -250,3 +246,14 @@ class PDFToImageConverter(BaseConverter)
 ```
 
 Converts PDF files to image format.
+
+<a id="file_conv_scripts.converters.PDFToImageExtractor"></a>
+
+## PDFToImageExtractor Objects
+
+```python
+class PDFToImageExtractor(BaseConverter)
+```
+
+Converts PDF files to image format.
+

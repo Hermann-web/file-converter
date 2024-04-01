@@ -48,6 +48,18 @@ fileconv examples/input/example.png -ot pdf
 
 This command executes the `ConverterApp` class, initiating the conversion process from an PNG file to a PDF file using the appropriate converter classes.
 
+## Other examples
+
+- pdf to png
+
+You can set, the output argument as a folder. So, the png files would be in that folder. Using a filepath instead of a folder may yield an error.
+
+```bash
+fileconv 'path/to/my/file.pdf' -o path/to/my/folder -ot png
+```
+
+This command will write png files into the folder mentioned
+
 ## Contribution
 
 Contributions to the `file_conv_scripts` package are welcome! Feel free to submit bug reports, feature requests, or pull requests via the GitHub repository. Additionally, consider extending the functionality by adding support for additional file formats or improving existing converter classes.

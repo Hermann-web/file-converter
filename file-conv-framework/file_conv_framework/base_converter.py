@@ -88,9 +88,7 @@ class ResolvedInputFile:
             logger.debug(f"Path exists. Setting is_dir to {is_dir}.")
         elif not filesuffix_set and filetype_set:
             # If there's no suffix and a file_type is specified, assume it's a directory and create it
-            self.path.mkdir(
-                parents=False, exist_ok=True
-            )
+            self.path.mkdir(parents=False, exist_ok=True)
             is_dir = True
             logger.debug(
                 "No suffix found and file_type is specified. Assuming directory and creating it. Setting is_dir to True."
@@ -98,9 +96,7 @@ class ResolvedInputFile:
         elif filesuffix_set:
             # If a suffix is present, assume it's a file
             is_dir = False
-            logger.debug(
-                "Suffix found. Assuming file. Setting is_dir to False."
-            )
+            logger.debug("Suffix found. Assuming file. Setting is_dir to False.")
         else:
             # If the method cannot determine whether the path is for a file or directory, raise an error
             raise ValueError(
@@ -307,8 +303,9 @@ class BaseConverter(ABC):
             logger.debug("Output content format check passed")
             # save file
             logger.info("Writing output file...")
-            self._write_content(output_file, self.output_content)
+            self._write_content(output_path, self.output_content)
             logger.debug("Write complete")
+
         assert (
             output_path.exists()
         ), f"Output file {output_path.name} not found after conversion"

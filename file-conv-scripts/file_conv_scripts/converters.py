@@ -164,14 +164,16 @@ class ImageToPDFConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.PDF
 
-    def _convert(self, input_contents: List[PillowImage.Image], output_path: Path):
+    def _convert(
+        self, input_contents: List[PillowImage.Image], output_file: Path, **kwargs
+    ):
         images = input_contents
 
         # Create a list of all the input images and convert them to RGB
         images = [img.convert("RGB") for img in images]
 
         # Save the PDF file
-        images[0].save(output_path, save_all=True, append_images=images[1:])
+        images[0].save(output_file, save_all=True, append_images=images[1:])
 
 
 class ImageToPDFConverterWithPyPdf2(BaseConverter):
@@ -221,10 +223,10 @@ class ImageToPDFConverterWithPyPdf2(BaseConverter):
 #     def _get_supported_output_type(cls) -> FileType:
 #         return FileType.PDF
 
-#     def _convert(self, input_contents: List[Path], output_path: Path):
+#     def _convert(self, input_contents: List[Path], outputfile: Path):
 #         filepaths = input_contents
 #         # Convert images to PDF using img2pdf
-#         with open(output_path, "wb") as f:
+#         with open(output_file, "wb") as f:
 #             f.write(img2pdf.convert(filepaths))
 
 
@@ -244,7 +246,7 @@ class PDFToImageConverter(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.IMAGE
 
-    def _convert(self, input_contents: List[PdfReader], output_path: Path):
+    def _convert(self, input_contents: List[PdfReader], output_folder: Path, **kwargs):
         # Assuming you want to convert each page to an image
         pass
 
@@ -265,15 +267,14 @@ class PDFToImageExtractor(BaseConverter):
     def _get_supported_output_type(cls) -> FileType:
         return FileType.IMAGE
 
-    def _convert(self, input_contents: List[PdfReader], output_path: Path):
+    def _convert(self, input_contents: List[PdfReader], output_folder: Path, **kwargs):
         """
         - read more [here](https://pypdf2.readthedocs.io/en/3.0.0/user/extract-images.html)
         """
         pdf_file = input_contents[0]
-        output_path.mkdir()
 
         for page_num, page in enumerate(pdf_file.pages):
             for count, img in enumerate(page.images):
-                fpath = output_path / f"page{page_num+1}-fig{count+1}-{img.name}"
+                fpath = output_folder / f"page{page_num+1}-fig{count+1}-{img.name}"
                 with open(str(fpath), "wb") as fp:
                     fp.write(img.data)

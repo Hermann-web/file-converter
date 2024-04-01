@@ -26,7 +26,7 @@ priority = "explicit"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-file-conv-framework = {version = "^0.1.4a3", source = "test-pypi"}
+file-conv-framework = {version = "0.1.4a4", source = "test-pypi"}
 python-magic = "^0.4.27"
 pillow = "^10.2.0"
 pandas = "^2.2.1"

@@ -11,11 +11,7 @@
     * [run](#file_conv_framework.converter_app.BaseConverterApp.run)
 * [file\_conv\_framework.io\_handler](#file_conv_framework.io_handler)
   * [FileReader](#file_conv_framework.io_handler.FileReader)
-    * [check\_input\_format](#file_conv_framework.io_handler.FileReader.check_input_format)
-    * [read\_content](#file_conv_framework.io_handler.FileReader.read_content)
   * [FileWriter](#file_conv_framework.io_handler.FileWriter)
-    * [check\_output\_format](#file_conv_framework.io_handler.FileWriter.check_output_format)
-    * [write\_content](#file_conv_framework.io_handler.FileWriter.write_content)
   * [SamePathReader](#file_conv_framework.io_handler.SamePathReader)
   * [TxtToStrReader](#file_conv_framework.io_handler.TxtToStrReader)
   * [StrToTxtWriter](#file_conv_framework.io_handler.StrToTxtWriter)
@@ -53,6 +49,7 @@
     * [\_\_init\_\_](#file_conv_framework.base_converter.ResolvedInputFile.__init__)
     * [\_\_resolve\_filetype\_\_](#file_conv_framework.base_converter.ResolvedInputFile.__resolve_filetype__)
     * [\_\_str\_\_](#file_conv_framework.base_converter.ResolvedInputFile.__str__)
+    * [\_\_repr\_\_](#file_conv_framework.base_converter.ResolvedInputFile.__repr__)
   * [BaseConverter](#file_conv_framework.base_converter.BaseConverter)
     * [\_\_init\_\_](#file_conv_framework.base_converter.BaseConverter.__init__)
     * [convert](#file_conv_framework.base_converter.BaseConverter.convert)
@@ -101,20 +98,20 @@ Main application class responsible for managing file conversions.
 #### \_\_init\_\_
 
 ```python
-def __init__(input_file_path: str,
-             input_file_type: FileType = None,
+def __init__(input_file_paths: List[str],
+             input_file_type: str = None,
              output_file_path: str = None,
-             output_file_type: FileType = None)
+             output_file_type: str = None)
 ```
 
 Initializes the BaseConverterApp instance.
 
 **Arguments**:
 
-* `input_file_path` _str_ - The path to the input file.
-* `input_file_type` _FileType, optional_ - The type of the input file. Defaults to None.
-* `output_file_path` _str, optional_ - The path to the output file. Defaults to None.
-* `output_file_type` _FileType, optional_ - The type of the output file. Defaults to None.
+- `input_file_paths` _List[str]_ - List of paths to the input files.
+- `input_file_type` _FileType, optional_ - The type of the input file. Defaults to None.
+- `output_file_path` _str, optional_ - The path to the output file. Defaults to None.
+- `output_file_type` _FileType, optional_ - The type of the output file. Defaults to None.
 
 <a id="file_conv_framework.converter_app.BaseConverterApp.add_converter_pair"></a>
 
@@ -128,11 +125,12 @@ Adds a converter pair to the application.
 
 **Arguments**:
 
-* `converter_class` _Type[BaseConverter]_ - The converter class to add.
+- `converter_class` _Type[BaseConverter]_ - The converter class to add.
   
+
 **Raises**:
 
-* `ValueError` - If the converter class is invalid.
+- `ValueError` - If the converter class is invalid.
 
 <a id="file_conv_framework.converter_app.BaseConverterApp.get_supported_conversions"></a>
 
@@ -146,7 +144,7 @@ Retrieves the supported conversions.
 
 **Returns**:
 
-* `Tuple[Tuple[FileType]]` - A tuple of tuples representing supported conversions.
+- `Tuple[Tuple[FileType]]` - A tuple of tuples representing supported conversions.
 
 <a id="file_conv_framework.converter_app.BaseConverterApp.run"></a>
 
@@ -179,44 +177,6 @@ class FileReader(ABC)
 
 Abstract base class for file readers.
 
-<a id="file_conv_framework.io_handler.FileReader.check_input_format"></a>
-
-#### check\_input\_format
-
-```python
-@abstractmethod
-def check_input_format(content: Any) -> bool
-```
-
-Checks if the provided content matches the expected input format.
-
-**Arguments**:
-
-* `content` _Any_ - The content to be checked.
-  
-**Returns**:
-
-* `bool` - True if the content matches the expected input format, False otherwise.
-
-<a id="file_conv_framework.io_handler.FileReader.read_content"></a>
-
-#### read\_content
-
-```python
-@abstractmethod
-def read_content(input_path: Path) -> Any
-```
-
-Reads and returns the content from the given input path.
-
-**Arguments**:
-
-* `input_path` _Path_ - The path to the input file.
-  
-**Returns**:
-
-* `Any` - The content read from the input file.
-
 <a id="file_conv_framework.io_handler.FileWriter"></a>
 
 ## FileWriter Objects
@@ -226,41 +186,6 @@ class FileWriter(ABC)
 ```
 
 Abstract base class for file writers.
-
-<a id="file_conv_framework.io_handler.FileWriter.check_output_format"></a>
-
-#### check\_output\_format
-
-```python
-@abstractmethod
-def check_output_format(content: Any) -> bool
-```
-
-Checks if the provided content matches the expected output format.
-
-**Arguments**:
-
-* `content` _Any_ - The content to be checked.
-  
-**Returns**:
-
-* `bool` - True if the content matches the expected output format, False otherwise.
-
-<a id="file_conv_framework.io_handler.FileWriter.write_content"></a>
-
-#### write\_content
-
-```python
-@abstractmethod
-def write_content(output_path: Path, output_content: Any)
-```
-
-Writes the provided content to the given output path.
-
-**Arguments**:
-
-* `output_path` _Path_ - The path to the output file.
-* `output_content` _Any_ - The content to be written to the output file.
 
 <a id="file_conv_framework.io_handler.SamePathReader"></a>
 
@@ -382,7 +307,7 @@ Creates a new instance of the class if it doesn't exist already.
 
 **Returns**:
 
-* `MimeGuesser` - The instance of the MimeGuesser class.
+- `MimeGuesser` - The instance of the MimeGuesser class.
 
 <a id="file_conv_framework.mimes.MimeGuesser.get_mime_guesser"></a>
 
@@ -396,7 +321,7 @@ Returns the mime_guesser instance.
 
 **Returns**:
 
-* `magic.Magic` - The instance of the mime_guesser.
+- `magic.Magic` - The instance of the mime_guesser.
 
 <a id="file_conv_framework.mimes.MimeGuesser.guess_mime_type_from_file"></a>
 
@@ -411,15 +336,17 @@ Guesses the MIME type from the file path.
 
 **Arguments**:
 
-* `file_path` _str_ - The path to the file.
+- `file_path` _str_ - The path to the file.
   
+
 **Returns**:
 
-* `str` - The guessed MIME type.
+- `str` - The guessed MIME type.
   
+
 **Raises**:
 
-* `ImportError` - If the python-magic library is not imported.
+- `ImportError` - If the python-magic library is not imported.
 
 <a id="file_conv_framework.mimes.guess_mime_type_from_file"></a>
 
@@ -433,11 +360,12 @@ Guesses the MIME type from the file path.
 
 **Arguments**:
 
-* `file_path` _str_ - The path to the file.
+- `file_path` _str_ - The path to the file.
   
+
 **Returns**:
 
-* `str` - The guessed MIME type.
+- `str` - The guessed MIME type.
 
 <a id="file_conv_framework.filetypes"></a>
 
@@ -451,23 +379,23 @@ file extensions, MIME types, and optionally, file content. It also includes cust
 errors related to file type processing.
 
 Classes:
-* UnsupportedFileTypeError: Custom exception for handling unsupported file types.
-* EmptySuffixError: Specialized exception for cases where a file's suffix does not provide enough information
+- UnsupportedFileTypeError: Custom exception for handling unsupported file types.
+- EmptySuffixError: Specialized exception for cases where a file's suffix does not provide enough information
                     to determine its type.
-* FileNotFoundError: Raised when a specified file does not exist.
-* MismatchedException: Exception for handling cases where there's a mismatch between expected and actual file attributes.
-* FileType: Enum class that encapsulates various file types supported by the system, providing methods for
+- FileNotFoundError: Raised when a specified file does not exist.
+- MismatchedException: Exception for handling cases where there's a mismatch between expected and actual file attributes.
+- FileType: Enum class that encapsulates various file types supported by the system, providing methods for
             type determination from file attributes.
 
 Functions:
-* test_file_type_parsing(): Demonstrates and validates the parsing functionality for various file types.
-* test_file_type_matching(): Tests the matching and validation capabilities of the FileType class.
+- test_file_type_parsing(): Demonstrates and validates the parsing functionality for various file types.
+- test_file_type_matching(): Tests the matching and validation capabilities of the FileType class.
 
 Dependencies:
-* collections.namedtuple: For defining simple classes for storing MIME type information.
-* enum.Enum: For creating the FileType enumeration.
-* pathlib.Path: For file path manipulations and checks.
-* file_conv_framework.mimes.guess_mime_type_from_file: Utility function to guess MIME type from a file path.
+- collections.namedtuple: For defining simple classes for storing MIME type information.
+- enum.Enum: For creating the FileType enumeration.
+- pathlib.Path: For file path manipulations and checks.
+- file_conv_framework.mimes.guess_mime_type_from_file: Utility function to guess MIME type from a file path.
 
 <a id="file_conv_framework.filetypes.UnsupportedFileTypeError"></a>
 
@@ -538,17 +466,19 @@ Determines a FileType from a file's suffix.
 
 **Arguments**:
 
-* `suffix` _str_ - The file suffix (extension).
-* `raise_err` _bool, optional_ - Whether to raise an exception if the type is unhandled. Defaults to False.
+- `suffix` _str_ - The file suffix (extension).
+- `raise_err` _bool, optional_ - Whether to raise an exception if the type is unhandled. Defaults to False.
   
+
 **Returns**:
 
-* `FileType` - The determined FileType enumeration member.
+- `FileType` - The determined FileType enumeration member.
   
+
 **Raises**:
 
-* `EmptySuffixError` - If the suffix is empty and raise_err is True.
-* `UnsupportedFileTypeError` - If the file type is unhandled and raise_err is True.
+- `EmptySuffixError` - If the suffix is empty and raise_err is True.
+- `UnsupportedFileTypeError` - If the file type is unhandled and raise_err is True.
 
 <a id="file_conv_framework.filetypes.FileType.from_mimetype"></a>
 
@@ -563,17 +493,19 @@ Determines a FileType from a file's MIME type.
 
 **Arguments**:
 
-* `file_path` _str_ - The path to the file.
-* `raise_err` _bool, optional_ - Whether to raise an exception if the type is unhandled. Defaults to False.
+- `file_path` _str_ - The path to the file.
+- `raise_err` _bool, optional_ - Whether to raise an exception if the type is unhandled. Defaults to False.
   
+
 **Returns**:
 
-* `FileType` - The determined FileType enumeration member.
+- `FileType` - The determined FileType enumeration member.
   
+
 **Raises**:
 
-* `FileNotFoundError` - If the file does not exist.
-* `UnsupportedFileTypeError` - If the file type is unhandled and raise_err is True.
+- `FileNotFoundError` - If the file does not exist.
+- `UnsupportedFileTypeError` - If the file type is unhandled and raise_err is True.
 
 <a id="file_conv_framework.filetypes.FileType.from_path"></a>
 
@@ -588,21 +520,23 @@ Determines the FileType of a file based on its path. Optionally reads the file's
 
 **Arguments**:
 
-* `path` _Path_ - The path to the file.
-* `read_content` _bool, optional_ - If True, the method also checks the file's content to determine its type.
+- `path` _Path_ - The path to the file.
+- `read_content` _bool, optional_ - If True, the method also checks the file's content to determine its type.
   Defaults to False.
-* `raise_err` _bool, optional_ - If True, raises exceptions for unsupported types or when file does not exist.
+- `raise_err` _bool, optional_ - If True, raises exceptions for unsupported types or when file does not exist.
   Defaults to False.
   
+
 **Returns**:
 
-* `FileType` - The determined FileType enumeration member based on the file's suffix and/or content.
+- `FileType` - The determined FileType enumeration member based on the file's suffix and/or content.
   
+
 **Raises**:
 
-* `FileNotFoundError` - If the file does not exist when attempting to read its content.
-* `UnsupportedFileTypeError` - If the file type is unsupported and raise_err is True.
-* `AssertionError` - If there is a mismatch between the file type determined from the file's suffix and its content.
+- `FileNotFoundError` - If the file does not exist when attempting to read its content.
+- `UnsupportedFileTypeError` - If the file type is unsupported and raise_err is True.
+- `AssertionError` - If there is a mismatch between the file type determined from the file's suffix and its content.
 
 <a id="file_conv_framework.filetypes.FileType.is_true_filetype"></a>
 
@@ -616,7 +550,7 @@ Determines if the FileType instance represents a supported file type based on th
 
 **Returns**:
 
-* `bool` - True if the FileType has at least one associated file extension, False otherwise.
+- `bool` - True if the FileType has at least one associated file extension, False otherwise.
 
 <a id="file_conv_framework.filetypes.FileType.get_suffix"></a>
 
@@ -630,7 +564,7 @@ Retrieves the primary file extension associated with the FileType.
 
 **Returns**:
 
-* `str` - The primary file extension for the FileType, prefixed with a period.
+- `str` - The primary file extension for the FileType, prefixed with a period.
   Returns an empty string if the FileType does not have an associated extension.
 
 <a id="file_conv_framework.filetypes.FileType.is_valid_suffix"></a>
@@ -645,17 +579,19 @@ Validates whether a given file extension matches the FileType's expected extensi
 
 **Arguments**:
 
-* `suffix` _str_ - The file extension to validate, including the leading period (e.g., ".txt").
-* `raise_err` _bool, optional_ - If True, raises a MismatchedException for invalid extensions.
+- `suffix` _str_ - The file extension to validate, including the leading period (e.g., ".txt").
+- `raise_err` _bool, optional_ - If True, raises a MismatchedException for invalid extensions.
   Defaults to False.
   
+
 **Returns**:
 
-* `bool` - True if the suffix matches one of the FileType's extensions, False otherwise.
+- `bool` - True if the suffix matches one of the FileType's extensions, False otherwise.
   
+
 **Raises**:
 
-* `MismatchedException` - If the suffix does not match and raise_err is True.
+- `MismatchedException` - If the suffix does not match and raise_err is True.
 
 <a id="file_conv_framework.filetypes.FileType.is_valid_path"></a>
 
@@ -669,20 +605,22 @@ Validates whether the file at a given path matches the FileType, optionally chec
 
 **Arguments**:
 
-* `path` _Path_ - The path to the file to validate.
-* `raise_err` _bool, optional_ - If True, raises a MismatchedException for a mismatching file type.
+- `path` _Path_ - The path to the file to validate.
+- `raise_err` _bool, optional_ - If True, raises a MismatchedException for a mismatching file type.
   Defaults to False.
-* `read_content` _bool, optional_ - If True, also validates the file's content type against the FileType.
+- `read_content` _bool, optional_ - If True, also validates the file's content type against the FileType.
   Defaults to False.
   
+
 **Returns**:
 
-* `bool` - True if the file's type matches the FileType, based on its path and optionally its content.
+- `bool` - True if the file's type matches the FileType, based on its path and optionally its content.
   False otherwise.
   
+
 **Raises**:
 
-* `MismatchedException` - If the file's type does not match and raise_err is True.
+- `MismatchedException` - If the file's type does not match and raise_err is True.
 
 <a id="file_conv_framework.filetypes.FileType.is_valid_mime_type"></a>
 
@@ -700,18 +638,20 @@ FileType.TEXT, where a broader compatibility check is performed due to the gener
 
 **Arguments**:
 
-* `path` _Path_ - The path to the file whose MIME type is to be validated.
-* `raise_err` _bool, optional_ - If True, a MismatchedException is raised if the file's MIME type does not match
+- `path` _Path_ - The path to the file whose MIME type is to be validated.
+- `raise_err` _bool, optional_ - If True, a MismatchedException is raised if the file's MIME type does not match
   the expected MIME types of the FileType instance. Defaults to False.
   
+
 **Returns**:
 
-* `bool` - True if the file's MIME type matches the expected MIME types for this FileType instance or if special
+- `bool` - True if the file's MIME type matches the expected MIME types for this FileType instance or if special
   compatibility conditions are met (e.g., for FileType.TEXT with "text/plain"). Otherwise, False.
   
+
 **Raises**:
 
-* `MismatchedException` - If raise_err is True and the file's MIME type does not match the expected MIME types
+- `MismatchedException` - If raise_err is True and the file's MIME type does not match the expected MIME types
   for this FileType instance, including detailed information about the mismatch.
 
 <a id="file_conv_framework.filetypes.test_file_type_parsing"></a>
@@ -745,13 +685,13 @@ of file converters through abstract base classes, managing file types, and handl
 efficiently. The module is designed to be extendible, supporting various file formats and conversion strategies.
 
 Classes:
-* ResolvedInputFile: Manages file paths and types, resolving them as needed.
-* BaseConverter: An abstract base class for creating specific file format converters, enforcing the implementation
+- ResolvedInputFile: Manages file paths and types, resolving them as needed.
+- BaseConverter: An abstract base class for creating specific file format converters, enforcing the implementation
                  of file conversion logic.
 
 Exceptions:
-* ValueError: Raised when file paths or types are incompatible or unsupported.
-* AssertionError: Ensured for internal consistency checks, confirming that file types match expected values.
+- ValueError: Raised when file paths or types are incompatible or unsupported.
+- AssertionError: Ensured for internal consistency checks, confirming that file types match expected values.
 
 <a id="file_conv_framework.base_converter.ResolvedInputFile"></a>
 
@@ -761,44 +701,53 @@ Exceptions:
 class ResolvedInputFile()
 ```
 
-Handles resolving the file type of a given file, managing path adjustments and optional content reading.
+Handles resolving the file type of a given file or folder, managing path adjustments and optional content reading.
 
 <a id="file_conv_framework.base_converter.ResolvedInputFile.__init__"></a>
 
 #### \_\_init\_\_
 
 ```python
-def __init__(file_path, file_type=None, add_suffix=False, read_content=False)
+def __init__(path: Path,
+             is_dir: bool = None,
+             should_exist: bool = True,
+             file_type: str = None,
+             add_suffix: bool = False,
+             read_content: bool = False)
 ```
 
 Initializes an instance of ResolvedInputFile with options for type resolution and path modification.
 
 **Arguments**:
 
-* `file_path` _str_ - The path to the file.
-* `file_type` _FileType, optional_ - The explicit type of the file. If None, attempts to resolve based on the path or content.
-* `add_suffix` _bool, optional_ - Whether to append the resolved file type's suffix to the file path. Defaults to False.
-* `read_content` _bool, optional_ - Whether to read the file's content to assist in type resolution. Defaults to False.
+- `path` _str_ - The path to the file or folder.
+- `is_dir` _bool, optional_ - Specifies if the path is a directory. If None, inferred using pathlib. Defaults to None.
+- `should_exist` _bool, optional_ - Specifies if the existence of the path is required. Defaults to True.
+- `file_type` _str, optional_ - The explicit type of the file. If None, attempts to resolve to a FileType object based on the path or content.
+- `add_suffix` _bool, optional_ - Whether to append the resolved file type's suffix to the file path. Defaults to False.
+- `read_content` _bool, optional_ - Whether to read the file's content to assist in type resolution. Defaults to False.
 
 <a id="file_conv_framework.base_converter.ResolvedInputFile.__resolve_filetype__"></a>
 
 #### \_\_resolve\_filetype\_\_
 
 ```python
-def __resolve_filetype__(file_type, file_path, read_content) -> FileType
+def __resolve_filetype__(file_type: str, file_path: Path,
+                         read_content: bool) -> FileType
 ```
 
 Determines the file type, utilizing the provided type, file path, or content as needed.
 
 **Arguments**:
 
-* `file_type` _FileType or str, optional_ - An explicit file type or extension.
-* `file_path` _str_ - The path to the file, used if file_type is not provided.
-* `read_content` _bool_ - Indicates if file content should be used to help resolve the file type.
+- `file_type` _FileType or str, optional_ - An explicit file type or extension.
+- `file_path` _str_ - The path to the file, used if file_type is not provided.
+- `read_content` _bool_ - Indicates if file content should be used to help resolve the file type.
   
+
 **Returns**:
 
-* `FileType` - The resolved file type.
+- `FileType` - The resolved file type.
 
 <a id="file_conv_framework.base_converter.ResolvedInputFile.__str__"></a>
 
@@ -812,7 +761,21 @@ Returns the absolute file path as a string.
 
 **Returns**:
 
-* `str` - The resolved file path.
+- `str` - The resolved file path.
+
+<a id="file_conv_framework.base_converter.ResolvedInputFile.__repr__"></a>
+
+#### \_\_repr\_\_
+
+```python
+def __repr__()
+```
+
+Returns the absolute file path as a string.
+
+**Returns**:
+
+- `str` - The resolved file path.
 
 <a id="file_conv_framework.base_converter.BaseConverter"></a>
 
@@ -829,15 +792,16 @@ Abstract base class for file conversion, defining the template for input to outp
 #### \_\_init\_\_
 
 ```python
-def __init__(input_file: ResolvedInputFile, output_file: ResolvedInputFile)
+def __init__(input_files: Union[ResolvedInputFile, List[ResolvedInputFile]],
+             output_file: ResolvedInputFile)
 ```
 
 Sets up the converter with specified input and output files, ensuring compatibility.
 
 **Arguments**:
 
-* `input_file` _ResolvedInputFile_ - The input file with resolved type.
-* `output_file` _ResolvedInputFile_ - The output file where the converted data will be saved.
+- `input_files` _Union[ResolvedInputFile, List[ResolvedInputFile]]_ - Either a single input file or a list of input files with resolved types.
+- `output_file` _ResolvedInputFile_ - The output file where the converted data will be saved.
 
 <a id="file_conv_framework.base_converter.BaseConverter.convert"></a>
 
@@ -872,7 +836,7 @@ Defines the supported input file type for this converter.
 
 **Returns**:
 
-* `FileType` - The file type supported for input.
+- `FileType` - The file type supported for input.
 
 <a id="file_conv_framework.base_converter.BaseConverter.get_supported_output_type"></a>
 
@@ -887,4 +851,5 @@ Defines the supported output file type for this converter.
 
 **Returns**:
 
-* `FileType` - The file type supported for output.
+- `FileType` - The file type supported for output.
+
