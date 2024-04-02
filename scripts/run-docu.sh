@@ -20,6 +20,7 @@ CMD="pydoc-markdown -I $FOLDER_PATH  --render-toc --site-dir out --build > $FOLD
 
 # Send the commands to the tmux session. This activates the conda environment and runs your script.
 tmux send-keys -t $SESSION "conda activate small-proj" C-m
+tmux send-keys -t $SESSION "mkdir -p $FOLDER_PATH/docs" C-m
 tmux send-keys -t $SESSION "$CMD" C-m
 
 # Optional: Send a command to exit after the previous commands complete. Remove the '#' to enable.
