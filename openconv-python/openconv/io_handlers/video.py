@@ -2,9 +2,9 @@ from pathlib import Path
 from typing import List, Union
 
 import numpy as np
-from file_conv_framework.io_handler import FileReader, FileWriter
+from convcore.io_handler import FileReader, FileWriter
 
-from file_conv_scripts.utils.image_to_video import save_video_from_array_images
+from openconv.utils.image_to_video import save_video_from_array_images
 
 
 class VideoArrayWriter(FileWriter):

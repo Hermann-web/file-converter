@@ -7,7 +7,7 @@ and concrete implementations for converting between image files and Pillow Image
 
 from pathlib import Path
 
-from file_conv_framework.io_handler import FileReader, FileWriter
+from convcore.io_handler import FileReader, FileWriter
 from PIL import Image as PillowImage
 
 

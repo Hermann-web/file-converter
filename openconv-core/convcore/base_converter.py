@@ -19,9 +19,9 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Union
 
-from file_conv_framework.filetypes import EmptySuffixError, FileType
-from file_conv_framework.io_handler import FileReader, FileWriter, SamePathReader
-from file_conv_framework.logger import logger
+from .filetypes import EmptySuffixError, FileType
+from .io_handler import FileReader, FileWriter, SamePathReader
+from .logger import logger
 
 
 class ResolvedInputFile:

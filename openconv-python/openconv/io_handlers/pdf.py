@@ -7,7 +7,7 @@ and concrete implementations for converting between PDF files and PyPDF2 PdfRead
 
 from pathlib import Path
 
-from file_conv_framework.io_handler import FileReader, FileWriter
+from convcore.io_handler import FileReader, FileWriter
 from PyPDF2 import PdfReader, PdfWriter
 
 

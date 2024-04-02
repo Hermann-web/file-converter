@@ -1,6 +1,6 @@
-# File Conv Framework
+# Open Conv Core: The File Convertion Framework
 
-The `file_conv_framework` package provides a robust framework for handling file conversion tasks in Python. It offers a set of classes and utilities designed to simplify the process of reading from and writing to different file formats efficiently.
+The `openconv-core` package provides a robust framework for handling file conversion tasks in Python. It offers a set of classes and utilities designed to simplify the process of reading from and writing to different file formats efficiently.
 
 ## Features
 
@@ -14,7 +14,7 @@ The `file_conv_framework` package provides a robust framework for handling file 
 
 ## Conversion Strategies
 
-When using the `file_conv_framework`, you can adopt different strategies for file conversion based on your specific requirements:
+When using the `openconv-core`, you can adopt different strategies for file conversion based on your specific requirements:
 
 ### 1. Direct Conversion
 
@@ -45,19 +45,19 @@ The file conversion process can be dissected into three distinct instances:
 
 ```bash
 # with pip
-pip install -i https://test.pypi.org/simple/file-conv-framework
+pip install -i https://test.pypi.org/simple/openconv-core
 # with poetry
-poetry add file-conv-framework --source test-pypi
+poetry add openconv-core --source test-pypi
 ```
 
 ## Usage
 
-The `file_conv_framework` package can be used independently to build custom file conversion utilities or integrated into larger projects for handling file format transformations efficiently.
+The `openconv-core` package can be used independently to build custom file conversion utilities or integrated into larger projects for handling file format transformations efficiently.
 
 ```python
-from file_conv_framework.io_handler import CsvToListReader, ListToCsvWriter
-from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
-from file_conv_framework.filetypes import FileType
+from convcore.io_handler import CsvToListReader, ListToCsvWriter
+from convcore.base_converter import BaseConverter, ResolvedInputFile
+from convcore.filetypes import FileType
 
 class CSVToJSONConverter(BaseConverter):
     file_reader = CsvToListReader()
@@ -86,13 +86,13 @@ converter.convert()
 
 ## More Examples
 
-The `examples` folder in this repository contains practical demonstrations of how to use the `file_conv_framework` package for file conversion tasks. Currently, it includes the following examples:
+The `examples` folder in this repository contains practical demonstrations of how to use the `openconv-core` package for file conversion tasks. Currently, it includes the following examples:
 
-- **simple_converter.py**: Demonstrates a basic file converter that converts Excel (XLSX) files to CSV format. It utilizes the `XLXSToCSVConverter` class defined within the `file_conv_framework` package to perform the conversion.
+- **simple_converter.py**: Demonstrates a basic file converter that converts Excel (XLSX) files to CSV format. It utilizes the `XLXSToCSVConverter` class defined within the `openconv-core` package to perform the conversion.
 
-- **cli_app_example.py**: Illustrates how to build a command-line interface (CLI) application using the `ConverterApp` class from the `file_conv_framework.converter_app` module. This CLI app allows users to specify input and output files, as well as input and output file types, for performing file conversions.
+- **cli_app_example.py**: Illustrates how to build a command-line interface (CLI) application using the `ConverterApp` class from the `openconv-core.converter_app` module. This CLI app allows users to specify input and output files, as well as input and output file types, for performing file conversions.
 
-These examples serve as practical demonstrations of how to leverage the capabilities of the `file_conv_framework` package in real-world scenarios. Users can refer to these examples for guidance on building their own file conversion utilities or integrating file conversion functionality into existing projects.
+These examples serve as practical demonstrations of how to leverage the capabilities of the `openconv-core` package in real-world scenarios. Users can refer to these examples for guidance on building their own file conversion utilities or integrating file conversion functionality into existing projects.
 
 ## Todo
 
@@ -104,8 +104,8 @@ These examples serve as practical demonstrations of how to leverage the capabili
 
 ## Contributing
 
-Contributions to the `file_conv_framework` package are welcome! Feel free to submit bug reports, feature requests, or pull requests via the GitHub repository.
+Contributions to the `openconv-core` package are welcome! Feel free to submit bug reports, feature requests, or pull requests via the GitHub repository.
 
 ## Disclaimer
 
-Please note that while the `file_conv_framework` package aims to provide a versatile framework for file conversion tasks, it may not cover every possible use case or handle all edge cases. Users are encouraged to review and customize the code according to their specific requirements.
+Please note that while the `openconv-core` package aims to provide a versatile framework for file conversion tasks, it may not cover every possible use case or handle all edge cases. Users are encouraged to review and customize the code according to their specific requirements.

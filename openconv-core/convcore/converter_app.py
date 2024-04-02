@@ -7,9 +7,9 @@ This module contains the main application logic.
 from pathlib import Path
 from typing import Dict, List, Tuple, Type
 
-from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
-from file_conv_framework.filetypes import FileType
-from file_conv_framework.logger import logger
+from .base_converter import BaseConverter, ResolvedInputFile
+from .filetypes import FileType
+from .logger import logger
 
 
 class BaseConverterApp:

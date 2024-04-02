@@ -5,45 +5,40 @@ This module contains the main application logic.
 """
 
 import argparse
+import sys
 
-from file_conv_framework.converter_app import BaseConverterApp
+from simple_converter import TXTToMDConverter, TXTToTXTConverter
 
-from file_conv_scripts.converters import (
-    CSVToXMLConverter,
-    ImageToPDFConverter,
-    ImageToVideoConverterWithOpenCV,
-    ImageToVideoConverterWithPillow,
-    JSONToCSVConverter,
-    PDFToImageConverter,
-    PDFToImageExtractor,
-    TXTToMDConverter,
-    XLSXToCSVConverter,
-    XMLToJSONConverter,
-)
+sys.path.append(".")
+
+from convcore.converter_app import BaseConverterApp
 
 
 class ConverterApp(BaseConverterApp):
-    """
-    Application for file conversion.
-    """
 
-    converters = [
-        XMLToJSONConverter,
-        JSONToCSVConverter,
-        CSVToXMLConverter,
-        TXTToMDConverter,
-        XLSXToCSVConverter,
-        ImageToPDFConverter,
-        # PDFToImageConverter,
-        PDFToImageExtractor,
-        ImageToVideoConverterWithPillow,
-        ImageToVideoConverterWithOpenCV,
-    ]
+    converters = [TXTToMDConverter, TXTToTXTConverter]
 
 
 def main():
     """
-    Main function to run the file conversion application.
+    # Usage Example
+
+    ## Usage Example of TXTToTXTConverter to merge txt files
+
+    ```bash
+    find examples -type f -name "*.txt" | xargs python examples/cli_app_example.py -o examples/output -ot txt
+    # or
+    python examples/cli_app_example.py examples/cli_app_example.py examples/data/example.txt -o examples/output -ot txt
+    # or
+    python examples/cli_app_example.py examples/data/example.txt  examples/data/example2.txt -o examples/output/example.txt
+    ```
+
+    ## Usage Examples of TXTToMDConverter to merge txt files into a md file
+
+    ```bash
+    find examples -type f -name "*.txt" | xargs python examples/cli_app_example.py -o examples/output.md
+    ```
+
     """
     parser = argparse.ArgumentParser(description="File BaseConverter App")
     parser.add_argument("files", nargs="+", type=str, help="Paths to the input files")
@@ -66,6 +61,7 @@ def main():
     input_file_type = args.input_file_type
     output_file_path = args.output_file
     output_file_type = args.output_file_type
+    print("input_file_paths = ", input_file_paths)
 
     app = ConverterApp(
         input_file_paths, input_file_type, output_file_path, output_file_type

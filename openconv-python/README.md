@@ -1,21 +1,22 @@
-# File Conversion Scripts
+# Open Conv Python: The File Conversion Scripts
 
-The `file_conv_scripts` package provides a collection of Python scripts for file conversion tasks, built on top of the [file_conv_framework](https://test.pypi.org/project/file-conv-framework/) framework. These scripts offer functionalities to convert various file formats, including text, CSV, JSON, XML, Excel, and image files, making it easy to handle different types of data transformations efficiently.
+The `openconv-python`
+ package provides a collection of Python scripts for file conversion tasks, built on top of the [openconv-core](https://test.pypi.org/project/openconv-core/) framework. These scripts offer functionalities to convert various file formats, including text, CSV, JSON, XML, Excel, and image files, making it easy to handle different types of data transformations efficiently.
 
 ## Features
 
 - **Extensive Conversion Support**: The package includes scripts for converting between various file formats, including text, XML, JSON, CSV, and Excel.
-- **Integration with `file_conv_framework`**: Utilizes classes from the `file_conv_framework` package for file I/O operations, MIME type detection, and exception handling.
-- **Modular Converter Classes**: Each conversion script is backed by a custom converter class tailored to handle specific file format conversions, extending the base converter class provided by `file_conv_framework`.
-- **Flexible Input/Output Handling**: Supports reading from and writing to different file formats seamlessly, leveraging the capabilities of `file_conv_framework`.
+- **Integration with `openconv-core`**: Utilizes classes from the `openconv-core` package for file I/O operations, MIME type detection, and exception handling.
+- **Modular Converter Classes**: Each conversion script is backed by a custom converter class tailored to handle specific file format conversions, extending the base converter class provided by `openconv-core`.
+- **Flexible Input/Output Handling**: Supports reading from and writing to different file formats seamlessly, leveraging the capabilities of `openconv-core`.
 - **Custom File Handlers**: Implements custom file reader and writer classes for Excel and image files, demonstrating extensibility and versatility.
 - **Command-Line Interface**: Offers a command-line interface for executing file conversion tasks, allowing users to specify input and output file paths and types conveniently.
 - **Extensibility**: Other input/output pairs converters can be easily added to augment the existing functionality, providing flexibility for handling a wider range of file formats.
-- **Direct Integration**: For specific projects, each converter script can directly leverage the separated package `file_conv_framework` to build custom converters tailored to project requirements.
+- **Direct Integration**: For specific projects, each converter script can directly leverage the separated package `openconv-core` to build custom converters tailored to project requirements.
 
 ## Conversion Handlers
 
-This module provides classes for converting between different file formats. It includes [concrete implementations of conversion classes](./file_conv_scripts/converters.py) for various file types.
+This module provides classes for converting between different file formats. It includes [concrete implementations of conversion classes](./openconv/converters.py) for various file types.
 
 - `TextToTextConverter`: Converts text files to text format.
 - `XMLToJSONConverter`: Converts XML files to JSON format. (Reader: XmlToStrReader, Writer: DictToJsonWriter)
@@ -32,25 +33,25 @@ This module provides classes for converting between different file formats. It i
 
 ## Getting Started
 
-To use the `file_conv_scripts` package, follow these steps:
+To use the `openconv-python` package, follow these steps:
 
 1. Install the package along with its dependencies using your preferred package manager.
-2. Import the required classes into your Python scripts or applications, ensuring that the `file_conv_framework` package is accessible.
+2. Import the required classes into your Python scripts or applications, ensuring that the `openconv-core` package is accessible.
 3. Utilize the provided converter classes to perform file format conversions as needed, specifying input and output file paths and types.
 4. Execute the scripts either programmatically or via the command-line interface, providing necessary arguments for file conversion tasks.
 
 ## Example Usage
 
-Here's an example demonstrating how to use the `file_conv_scripts` package for converting an PNG file to PDF:
+Here's an example demonstrating how to use the `openconv-python` package for converting an PNG file to PDF:
 
 ```bash
 # Install the package along with its dependencies (if not already installed)
-pip install -i https://test.pypi.org/simple/ file-conv-scripts
+pip install -i https://test.pypi.org/simple/ openconv-python
 
 # Run the converter script
-fileconv examples/input/example.png -o examples/output/example.pdf
+openconv examples/input/example.png -o examples/output/example.pdf
 # or
-fileconv examples/input/example.png -ot pdf
+openconv examples/input/example.png -ot pdf
 ```
 
 This command executes the `ConverterApp` class, initiating the conversion process from an PNG file to a PDF file using the appropriate converter classes.
@@ -69,4 +70,4 @@ This command will write png files into the `examples/output` as mentioned
 
 ## Contribution
 
-Contributions to the `file_conv_scripts` package are welcome! Feel free to submit bug reports, feature requests, or pull requests via the GitHub repository. Additionally, consider extending the functionality by adding support for additional file formats or improving existing converter classes.
+Contributions to the `openconv-python` package are welcome! Feel free to submit bug reports, feature requests, or pull requests via the GitHub repository. Additionally, consider extending the functionality by adding support for additional file formats or improving existing converter classes.

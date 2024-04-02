@@ -1,7 +1,10 @@
 [tool.poetry]
-name = "file-conv-scripts"
+name = "openconv-python"
+packages = [
+    {include = "openconv"}
+]
 version = "0.2.4"
-description = "A collection of Python scripts for file conversion tasks, built on top of the file_conv_framework framework."
+description = "A collection of Python scripts for file conversion tasks, built on top of the openconv-core framework."
 authors = ["Hermann Agossou <agossouhermann7@gmail.com>"]
 readme = "README.md"
 maintainers = [
@@ -10,7 +13,7 @@ maintainers = [
 license = "MIT"
 homepage = "https://hermann-web.github.io/blog/projects/introducing-two-new-packages-for-streamlining-file-conversions-in-python/"
 repository = "https://github.com/Hermann-web/file-converter"
-documentation = "https://github.com/Hermann-web/file-converter/blob/main/file-conv-scripts/docs/index.md"
+documentation = "https://github.com/Hermann-web/file-converter/blob/main/openconv-python/docs/index.md"
 keywords = ["file conversion", "data processing", "file formats"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -26,12 +29,14 @@ priority = "explicit"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-file-conv-framework = {version = "^0.1.4", source = "test-pypi"}
-python-magic = "^0.4.0"
-pillow = "^10.0.0"
-pandas = "^2.0.0"
-pypdf2 = "^3.0.0"
-opencv-python = "^4.8.0"
+openconv-core = {version = "^0.1.5", source = "test-pypi"}
+numpy = "^1.26.4"
+opencv-python = "^4.9.0.80"
+pillow = "^10.3.0"
+pypdf2 = "^3.0.1"
+python-magic = "^0.4.27"
+pandas = "^2.2.1"
+
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"
@@ -48,4 +53,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-fileconv = "file_conv_scripts.app:main"
+openconv = "openconv.app:main"

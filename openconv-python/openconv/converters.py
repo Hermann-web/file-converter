@@ -9,9 +9,9 @@ from typing import Dict, List
 
 import numpy as np
 import pandas as pd
-from file_conv_framework.base_converter import BaseConverter
-from file_conv_framework.filetypes import FileType
-from file_conv_framework.io_handler import (
+from convcore.base_converter import BaseConverter
+from convcore.filetypes import FileType
+from convcore.io_handler import (
     CsvToListReader,
     DictToJsonWriter,
     JsonToDictReader,
@@ -24,7 +24,7 @@ from file_conv_framework.io_handler import (
 from PIL import Image as PillowImage
 from PyPDF2 import PdfReader, PdfWriter
 
-from file_conv_scripts.io_handlers import (
+from openconv.io_handlers import (
     ImageToOpenCVReader,
     ImageToPillowReader,
     PdfToPyPdfReader,

@@ -4,9 +4,9 @@ from typing import List
 
 sys.path.append(".")
 
-from file_conv_framework.base_converter import BaseConverter, ResolvedInputFile
-from file_conv_framework.filetypes import FileType
-from file_conv_framework.io_handler import FileReader, StrToTxtWriter, TxtToStrReader
+from convcore.base_converter import BaseConverter, ResolvedInputFile
+from convcore.filetypes import FileType
+from convcore.io_handler import FileReader, StrToTxtWriter, TxtToStrReader
 
 
 class TXTToMDConverter(BaseConverter):

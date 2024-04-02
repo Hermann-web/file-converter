@@ -23,14 +23,14 @@ Dependencies:
 - collections.namedtuple: For defining simple classes for storing MIME type information.
 - enum.Enum: For creating the FileType enumeration.
 - pathlib.Path: For file path manipulations and checks.
-- file_conv_framework.mimes.guess_mime_type_from_file: Utility function to guess MIME type from a file path.
+- convcore.mimes.guess_mime_type_from_file: Utility function to guess MIME type from a file path.
 """
 
 from collections import namedtuple
 from enum import Enum
 from pathlib import Path
 
-from file_conv_framework.mimes import guess_mime_type_from_file
+from .mimes import guess_mime_type_from_file
 
 
 # Custom Exceptions
