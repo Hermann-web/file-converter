@@ -12,12 +12,34 @@ The `file_conv_framework` package provides a robust framework for handling file 
 - **Base Converter Class**: Offers an abstract base class for implementing specific file converters, providing a standardized interface for file conversion operations.
 - **Resolved Input File Representation**: Introduces a class for representing input files with resolved file types, ensuring consistency and correctness in conversion tasks.
 
+## Conversion Strategies
+
+When using the `file_conv_framework`, you can adopt different strategies for file conversion based on your specific requirements:
+
+### 1. Direct Conversion
+
+In this approach, conversion is achieved without utilizing a dedicated writer. The reader module parses the input files into a list of objects. Subsequently, the `_convert` method orchestrates the writing process into a file or folder. This method is suitable for scenarios where direct manipulation of data structures suffices for conversion.
+
+### 2. Indirect Conversion
+
+Conversely, indirect conversion employs a converter that supports a dedicated writer. Here, the `convert` function's primary role is to transform the parsed list of objects into a format compatible with the writer. The actual conversion process may be executed by the writer, leveraging its capabilities. For instance, converting images to videos involves parsing images into a list of Pillow objects, which are then reformatted into a numpy array. This array, encapsulating frame dimensions and color channels, serves as input for the video writer.
+
+## Component Instances
+
+The file conversion process can be dissected into three distinct instances:
+
+- **Reader**: Handles input-output (IO) operations, transforming files into objects. Readers are implementations of the abstract class `FileReader` present in `io_handler.py`.
+  
+- **Converter**: Facilitates object-to-object conversion, acting as an intermediary for data transformation. Converters are implementations of the abstract class `BaseConverter` present in `base_converter.py`.
+
+- **Writer (Optional)**: Reverses the IO process, converting objects back into files. Writers are implementations of the abstract class `FileWriter` present in `io_handler.py`.
+
 ## Modules
 
-- **io_handler.py**: Contains classes for reading from and writing to files, including text, CSV, JSON, XML, and image files.
+- **io_handler.py**: Contains classes for reading from and writing to files, including text, CSV, JSON, XML, and image files. It includes abstract classes for `FileReader` and `FileWriter`.
 - **mimes.py**: Provides a MIME type guesser utility for detecting file MIME types based on file content.
 - **filetypes.py**: Defines enums and classes for representing different file types and handling file type validation.
-- **base_converter.py**: Implements the base converter class and the resolved input file class for performing file conversion tasks.
+- **base_converter.py**: Implements the base converter class and the resolved input file class for performing file conversion tasks. It includes the `BaseConverter` abstract class.
 
 ## Installation
 
@@ -71,6 +93,14 @@ The `examples` folder in this repository contains practical demonstrations of ho
 - **cli_app_example.py**: Illustrates how to build a command-line interface (CLI) application using the `ConverterApp` class from the `file_conv_framework.converter_app` module. This CLI app allows users to specify input and output files, as well as input and output file types, for performing file conversions.
 
 These examples serve as practical demonstrations of how to leverage the capabilities of the `file_conv_framework` package in real-world scenarios. Users can refer to these examples for guidance on building their own file conversion utilities or integrating file conversion functionality into existing projects.
+
+## Todo
+
+### Backend Support
+
+- Introduce the concept of backend labeling for `FileReader` and `FileWriter` implementations.
+- Enable multiple file readers/writers to share common backends. For instance, if an `ImageOpenCVReader` utilizes both numpy and OpenCV, the `VideoWriter` can leverage the same dependencies.
+- Allow users to specify preferred backend configurations, ensuring that conversion methods accommodate all selected backends seamlessly.
 
 ## Contributing
 
