@@ -1,6 +1,6 @@
 # File Conversion Scripts
 
-The `file_conv_scripts` package provides a collection of Python scripts for file conversion tasks, built on top of the `file_conv_framework` framework. These scripts offer functionalities to convert various file formats, including text, CSV, JSON, XML, Excel, and image files, making it easy to handle different types of data transformations efficiently.
+The `file_conv_scripts` package provides a collection of Python scripts for file conversion tasks, built on top of the [file_conv_framework](https://test.pypi.org/project/file-conv-framework/) framework. These scripts offer functionalities to convert various file formats, including text, CSV, JSON, XML, Excel, and image files, making it easy to handle different types of data transformations efficiently.
 
 ## Features
 
@@ -13,15 +13,22 @@ The `file_conv_scripts` package provides a collection of Python scripts for file
 - **Extensibility**: Other input/output pairs converters can be easily added to augment the existing functionality, providing flexibility for handling a wider range of file formats.
 - **Direct Integration**: For specific projects, each converter script can directly leverage the separated package `file_conv_framework` to build custom converters tailored to project requirements.
 
-## Classes
+## Conversion Handlers
 
-- `ConverterApp`: Main application class that orchestrates file conversion tasks using converter classes from `file_conv_framework`.
-- `TextToTextConverter`: Converts text files to text files, inheriting from the base converter class provided by `file_conv_framework`.
-- `XMLToJSONConverter`: Converts XML files to JSON files, demonstrating the use of framework classes for MIME type-based conversion.
-- `TXTToMDConverter`: Converts text files to Markdown files, showcasing subclassing and customization of converter functionalities.
-- `JSONToCSVConverter`: Converts JSON files to CSV files, highlighting the integration with `file_conv_framework` for file I/O operations.
-- `CSVToXMLConverter`: Converts CSV files to XML files, leveraging the flexibility of `file_conv_framework` for handling different file types.
-- `XLXSToCSVConverter`: Converts Excel files to CSV files, demonstrating custom file reader and writer classes for Excel files.
+This module provides classes for converting between different file formats. It includes [concrete implementations of conversion classes](./file_conv_scripts/converters.py) for various file types.
+
+- `TextToTextConverter`: Converts text files to text format.
+- `XMLToJSONConverter`: Converts XML files to JSON format. (Reader: XmlToStrReader, Writer: DictToJsonWriter)
+- `TXTToMDConverter`: Converts text files to Markdown format.
+- `JSONToCSVConverter`: Converts JSON files to CSV format. (Reader: JsonToDictReader, Writer: ListToCsvWriter)
+- `CSVToXMLConverter`: Converts CSV files to XML format. (Reader: CsvToListReader, Writer: StrToXmlWriter)
+- `XLSXToCSVConverter`: Converts Excel files to CSV format. (Reader: SpreadsheetToPandasReader, Writer: ListToCsvWriter)
+- `ImageToPDFConverter`: Converts image files to PDF format. (Reader: ImageToPillowReader)
+- `ImageToPDFConverterWithPyPdf2`: Converts image files to PDF format using PyPDF2. (Reader: ImageToPillowReader, Writer: PyPdfToPdfWriter)
+- `PDFToImageConverter`: Converts PDF files to image format. (Reader: PdfToPyPdfReader)
+- `PDFToImageExtractor`: Extracts images from PDF files. (Reader: PdfToPyPdfReader)
+- `ImageToVideoConverterWithPillow`: Converts image files to video format using Pillow. (Reader: ImageToPillowReader, Writer: VideoArrayWriter)
+- `ImageToVideoConverterWithOpenCV`: Converts image files to video format using OpenCV. (Reader: ImageToOpenCVReader, Writer: VideoArrayWriter)
 
 ## Getting Started
 

@@ -91,6 +91,7 @@ class FileType(Enum):
     PDF = MimeType(["pdf"], ["application/pdf"])
     IMAGE = MimeType(["jpg", "jpeg", "png"], ["image/jpeg", "image/png"])
     GIF = MimeType(["gif"], ["image/gif"])
+    VIDEO = MimeType(["mp4", "avi"], ["video/mp4", "video/x-msvideo"])
     XML = MimeType(["xml"], ["application/xml", "text/xml"])
     MARKDOWN = MimeType(["md"], ["text/markdown"], ["text/plain"])
     TEXT = MimeType(

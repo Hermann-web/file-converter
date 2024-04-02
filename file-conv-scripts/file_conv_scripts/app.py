@@ -11,6 +11,8 @@ from file_conv_framework.converter_app import BaseConverterApp
 from file_conv_scripts.converters import (
     CSVToXMLConverter,
     ImageToPDFConverter,
+    ImageToVideoConverterWithOpenCV,
+    ImageToVideoConverterWithPillow,
     JSONToCSVConverter,
     PDFToImageConverter,
     PDFToImageExtractor,
@@ -34,6 +36,8 @@ class ConverterApp(BaseConverterApp):
         ImageToPDFConverter,
         # PDFToImageConverter,
         PDFToImageExtractor,
+        ImageToVideoConverterWithPillow,
+        ImageToVideoConverterWithOpenCV,
     ]
 
 

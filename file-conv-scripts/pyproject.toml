@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "file-conv-scripts"
-version = "0.1.1"
+version = "0.2.0"
 description = "A collection of Python scripts for file conversion tasks, built on top of the file_conv_framework framework."
 authors = ["Hermann Agossou <agossouhermann7@gmail.com>"]
 readme = "README.md"
@@ -31,6 +31,7 @@ python-magic = "^0.4.27"
 pillow = "^10.2.0"
 pandas = "^2.2.1"
 pypdf2 = "^3.0.1"
+opencv-python = "^4.9.0.80"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"

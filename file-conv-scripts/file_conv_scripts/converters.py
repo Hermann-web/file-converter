@@ -7,6 +7,7 @@ This module provides classes for converting between different file formats. It i
 from pathlib import Path
 from typing import Dict, List
 
+import numpy as np
 import pandas as pd
 from file_conv_framework.base_converter import BaseConverter
 from file_conv_framework.filetypes import FileType
@@ -24,10 +25,12 @@ from PIL import Image as PillowImage
 from PyPDF2 import PdfReader, PdfWriter
 
 from file_conv_scripts.io_handlers import (
+    ImageToOpenCVReader,
     ImageToPillowReader,
     PdfToPyPdfReader,
     PyPdfToPdfWriter,
     SpreadsheetToPandasReader,
+    VideoArrayWriter,
 )
 
 
@@ -279,3 +282,66 @@ class PDFToImageExtractor(BaseConverter):
                 fpath = output_folder / f"page{page_num+1}-fig{count+1}-{img.name}"
                 with open(str(fpath), "wb") as fp:
                     fp.write(img.data)
+
+
+class ImageToVideoConverterWithPillow(BaseConverter):
+    """
+    Converts image files to video format.
+    """
+
+    file_reader = ImageToPillowReader()
+    file_writer = VideoArrayWriter()
+
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.IMAGE
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.VIDEO
+
+    def _convert(self, input_contents: List[PillowImage.Image]):
+        """
+        Converts a list of image files to a video file.
+
+        Args:
+            input_contents (List[PillowImage.Image]): List of input images.
+            output_file (Path): Output video file path.
+        """
+        # Convert Pillow images to numpy arrays
+        image_arrays = [np.array(img) for img in input_contents]
+
+        # Convert list of numpy based opencv images to numpy array
+        image_arrays = np.asarray(input_contents)
+
+        return image_arrays
+
+
+class ImageToVideoConverterWithOpenCV(BaseConverter):
+    """
+    Converts image files to video format.
+    """
+
+    file_reader = ImageToOpenCVReader()
+    file_writer = VideoArrayWriter()
+
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.IMAGE
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.VIDEO
+
+    def _convert(self, input_contents: List[np.ndarray]):
+        """
+        Converts a list of image files to a video file.
+
+        Args:
+            input_contents (List[np.ndarray]): List of input images.
+            output_file (Path): Output video file path.
+        """
+        # Convert list of numpy based opencv images to numpy array
+        image_arrays = np.asarray(input_contents)
+
+        return image_arrays

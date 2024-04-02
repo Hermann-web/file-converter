@@ -1,16 +1,21 @@
 # Table of Contents
 
 * [file\_conv\_scripts](#file_conv_scripts)
+* [file\_conv\_scripts.io\_handlers.img\_pillow](#file_conv_scripts.io_handlers.img_pillow)
+  * [ImageToPillowReader](#file_conv_scripts.io_handlers.img_pillow.ImageToPillowReader)
+  * [PillowToImageWriter](#file_conv_scripts.io_handlers.img_pillow.PillowToImageWriter)
 * [file\_conv\_scripts.io\_handlers](#file_conv_scripts.io_handlers)
+* [file\_conv\_scripts.io\_handlers.img\_opencv](#file_conv_scripts.io_handlers.img_opencv)
+  * [ImageToOpenCVReader](#file_conv_scripts.io_handlers.img_opencv.ImageToOpenCVReader)
+  * [OpenCVToImageWriter](#file_conv_scripts.io_handlers.img_opencv.OpenCVToImageWriter)
 * [file\_conv\_scripts.io\_handlers.pdf](#file_conv_scripts.io_handlers.pdf)
   * [PdfToPyPdfReader](#file_conv_scripts.io_handlers.pdf.PdfToPyPdfReader)
   * [PyPdfToPdfWriter](#file_conv_scripts.io_handlers.pdf.PyPdfToPdfWriter)
 * [file\_conv\_scripts.io\_handlers.spreadsheet](#file_conv_scripts.io_handlers.spreadsheet)
   * [SpreadsheetToPandasReader](#file_conv_scripts.io_handlers.spreadsheet.SpreadsheetToPandasReader)
   * [PandasToSpreadsheetWriter](#file_conv_scripts.io_handlers.spreadsheet.PandasToSpreadsheetWriter)
-* [file\_conv\_scripts.io\_handlers.image](#file_conv_scripts.io_handlers.image)
-  * [ImageToPillowReader](#file_conv_scripts.io_handlers.image.ImageToPillowReader)
-  * [PillowToImageWriter](#file_conv_scripts.io_handlers.image.PillowToImageWriter)
+* [file\_conv\_scripts.io\_handlers.video](#file_conv_scripts.io_handlers.video)
+  * [VideoArrayWriter](#file_conv_scripts.io_handlers.video.VideoArrayWriter)
 * [file\_conv\_scripts.app](#file_conv_scripts.app)
   * [ConverterApp](#file_conv_scripts.app.ConverterApp)
   * [main](#file_conv_scripts.app.main)
@@ -25,14 +30,74 @@
   * [ImageToPDFConverterWithPyPdf2](#file_conv_scripts.converters.ImageToPDFConverterWithPyPdf2)
   * [PDFToImageConverter](#file_conv_scripts.converters.PDFToImageConverter)
   * [PDFToImageExtractor](#file_conv_scripts.converters.PDFToImageExtractor)
+  * [ImageToVideoConverterWithPillow](#file_conv_scripts.converters.ImageToVideoConverterWithPillow)
+  * [ImageToVideoConverterWithOpenCV](#file_conv_scripts.converters.ImageToVideoConverterWithOpenCV)
+* [file\_conv\_scripts.utils.image\_to\_video](#file_conv_scripts.utils.image_to_video)
 
 <a id="file_conv_scripts"></a>
 
 # file\_conv\_scripts
 
+<a id="file_conv_scripts.io_handlers.img_pillow"></a>
+
+# file\_conv\_scripts.io\_handlers.img\_pillow
+
+Image File I/O Handlers
+
+This module provides classes for reading and writing image files using the Pillow library. It includes abstract base classes
+and concrete implementations for converting between image files and Pillow Image objects.
+
+<a id="file_conv_scripts.io_handlers.img_pillow.ImageToPillowReader"></a>
+
+## ImageToPillowReader Objects
+
+```python
+class ImageToPillowReader(FileReader)
+```
+
+Reads an image file and returns a Pillow Image object.
+
+<a id="file_conv_scripts.io_handlers.img_pillow.PillowToImageWriter"></a>
+
+## PillowToImageWriter Objects
+
+```python
+class PillowToImageWriter(FileWriter)
+```
+
+Writes a Pillow Image object to an image file.
+
 <a id="file_conv_scripts.io_handlers"></a>
 
 # file\_conv\_scripts.io\_handlers
+
+<a id="file_conv_scripts.io_handlers.img_opencv"></a>
+
+# file\_conv\_scripts.io\_handlers.img\_opencv
+
+File: img_opencv.py
+Author: Hermann Agossou
+Description: This module provides classes for reading and writing images using OpenCV.
+
+<a id="file_conv_scripts.io_handlers.img_opencv.ImageToOpenCVReader"></a>
+
+## ImageToOpenCVReader Objects
+
+```python
+class ImageToOpenCVReader(FileReader)
+```
+
+Reads an image file and returns an OpenCV image object.
+
+<a id="file_conv_scripts.io_handlers.img_opencv.OpenCVToImageWriter"></a>
+
+## OpenCVToImageWriter Objects
+
+```python
+class OpenCVToImageWriter(FileWriter)
+```
+
+Writes an OpenCV image object to an image file.
 
 <a id="file_conv_scripts.io_handlers.pdf"></a>
 
@@ -92,34 +157,19 @@ class PandasToSpreadsheetWriter(FileWriter)
 
 Writes a pandas DataFrame object to a spreadsheet file.
 
-<a id="file_conv_scripts.io_handlers.image"></a>
+<a id="file_conv_scripts.io_handlers.video"></a>
 
-# file\_conv\_scripts.io\_handlers.image
+# file\_conv\_scripts.io\_handlers.video
 
-Image File I/O Handlers
+<a id="file_conv_scripts.io_handlers.video.VideoArrayWriter"></a>
 
-This module provides classes for reading and writing image files using the Pillow library. It includes abstract base classes
-and concrete implementations for converting between image files and Pillow Image objects.
-
-<a id="file_conv_scripts.io_handlers.image.ImageToPillowReader"></a>
-
-## ImageToPillowReader Objects
+## VideoArrayWriter Objects
 
 ```python
-class ImageToPillowReader(FileReader)
+class VideoArrayWriter(FileWriter)
 ```
 
-Reads an image file and returns a Pillow Image object.
-
-<a id="file_conv_scripts.io_handlers.image.PillowToImageWriter"></a>
-
-## PillowToImageWriter Objects
-
-```python
-class PillowToImageWriter(FileWriter)
-```
-
-Writes a Pillow Image object to an image file.
+Writes a video to a file using a list of image arrays.
 
 <a id="file_conv_scripts.app"></a>
 
@@ -256,4 +306,54 @@ class PDFToImageExtractor(BaseConverter)
 ```
 
 Converts PDF files to image format.
+
+<a id="file_conv_scripts.converters.ImageToVideoConverterWithPillow"></a>
+
+## ImageToVideoConverterWithPillow Objects
+
+```python
+class ImageToVideoConverterWithPillow(BaseConverter)
+```
+
+Converts image files to video format.
+
+<a id="file_conv_scripts.converters.ImageToVideoConverterWithOpenCV"></a>
+
+## ImageToVideoConverterWithOpenCV Objects
+
+```python
+class ImageToVideoConverterWithOpenCV(BaseConverter)
+```
+
+Converts image files to video format.
+
+<a id="file_conv_scripts.utils.image_to_video"></a>
+
+# file\_conv\_scripts.utils.image\_to\_video
+
+images_to_video.py
+
+A script to convert a sequence of images into a video file using OpenCV.
+
+Dependencies:
+- OpenCV (cv2): A computer vision library for image and video processing.
+- pathlib: An object-oriented interface to filesystem paths.
+
+Usage:
+$ python images_to_video.py <input_images> <output_video>
+
+**Arguments**:
+
+- `input_images` - List of input image files to be converted into a video file.
+- `Example` - image1.jpg image2.jpg
+- `output_video` - Path to the output video file.
+- `Example` - output_video.avi
+  
+
+**Example**:
+
+  $ python images_to_video.py image1.jpg image2.jpg output_video.avi
+  
+- `Author` - Hermann Agossou
+- `Date` - Date of creation/modification
 
