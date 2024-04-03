@@ -36,6 +36,7 @@ pillow = "^10.3.0"
 pypdf2 = "^3.0.1"
 python-magic = "^0.4.27"
 pandas = "^2.2.1"
+imageio = "^2.30.0"
 
 
 [tool.poetry.group.dev.dependencies]

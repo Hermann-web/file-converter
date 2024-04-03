@@ -21,16 +21,19 @@ from convcore.io_handler import (
     TxtToStrReader,
     XmlToStrReader,
 )
+from cv2.typing import MatLike
 from PIL import Image as PillowImage
 from PyPDF2 import PdfReader, PdfWriter
 
 from openconv.io_handlers import (
+    FramesToGIFWriterWithImageIO,
     ImageToOpenCVReader,
     ImageToPillowReader,
     PdfToPyPdfReader,
     PyPdfToPdfWriter,
     SpreadsheetToPandasReader,
     VideoArrayWriter,
+    VideoToFramesReaderWithOpenCV,
 )
 
 
@@ -345,3 +348,34 @@ class ImageToVideoConverterWithOpenCV(BaseConverter):
         image_arrays = np.asarray(input_contents)
 
         return image_arrays
+
+
+class VideoToGIFConverter(BaseConverter):
+    """
+    Converts a video file to GIF format.
+    """
+
+    file_reader = VideoToFramesReaderWithOpenCV()
+    file_writer = FramesToGIFWriterWithImageIO()
+
+    @classmethod
+    def _get_supported_input_type(cls) -> FileType:
+        return FileType.VIDEO
+
+    @classmethod
+    def _get_supported_output_type(cls) -> FileType:
+        return FileType.GIF
+
+    def _convert(self, input_contents: List[List[MatLike]]):
+        """
+        Converts a list of video frames to a GIF.
+
+        Args:
+            input_contents (List[MatLike]): List of video frames.
+
+        Returns:
+            bytes: The converted GIF content.
+        """
+        video_frames = input_contents[0]
+        # Write video frames to GIF
+        return video_frames

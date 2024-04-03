@@ -1,8 +1,11 @@
 from pathlib import Path
 from typing import List, Union
 
+import cv2
+import imageio
 import numpy as np
 from convcore.io_handler import FileReader, FileWriter
+from cv2.typing import MatLike
 
 from openconv.utils.image_to_video import save_video_from_array_images
 
@@ -73,3 +76,100 @@ class VideoArrayWriter(FileWriter):
             fps=fps,
             label="img",
         )
+
+
+class VideoToFramesReaderWithOpenCV(FileReader):
+    """
+    Reads a video file and returns a list of frames in MatLike format.
+    """
+
+    input_format = List[MatLike]
+
+    def _check_input_format(self, content: List[MatLike]) -> bool:
+        """
+        Validates if the provided content is a list of MatLike objects.
+
+        Args:
+            content (List[MatLike]): The content to be validated.
+
+        Returns:
+            bool: True if the content is a list of MatLike objects, False otherwise.
+        """
+        print(f"content: {type(content)} {type(content[0])}")
+        if not isinstance(content, list):
+            return False
+        for item in content:
+            # Check if each item in the list is MatLike
+            if not isinstance(item, MatLike):
+                return False
+        return True
+
+    def _read_content(self, input_path: Path) -> List[MatLike]:
+        """
+        Reads and returns the frames from the given video file as a list of MatLike objects.
+
+        Args:
+            input_path (Path): The path to the input video file.
+
+        Returns:
+            List[MatLike]: A list containing frames read from the video file.
+        """
+        cap = cv2.VideoCapture(str(input_path))
+        frames = []
+
+        # Check if the video is opened successfully
+        if not cap.isOpened():
+            print(f"Error opening video file: {input_path}")
+            return frames
+
+        # Read frames and convert to RGB
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break  # Break the loop if there are no more frames
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frames.append(frame_rgb)
+
+        # Release the video capture object
+        cap.release()
+        return frames
+
+
+class FramesToGIFWriterWithImageIO(FileWriter):
+    """
+    Writes a list of frames to a GIF file using imageio.
+    """
+
+    def _check_output_format(self, content) -> bool:
+        """
+        Validates if the provided content is a list of frames.
+
+        Args:
+            content: The content to be validated.
+
+        Returns:
+            bool: True if the content is a list of frames, False otherwise.
+        """
+        if not isinstance(content, list):
+            return False
+        for item in content:
+            # Check if each item in the list is MatLike
+            if not isinstance(item, MatLike):
+                return False
+        return True
+
+        # return isinstance(content, list) and all(isinstance(frame, cv2.mat_wrapper.Mat) for frame in content)
+
+    def _write_content(self, output_gif: Path, frames: List[MatLike]):
+        """
+        Writes the provided list of frames to the given output GIF file.
+
+        Args:
+            output_gif (Path): The path to the output GIF file.
+            frames (List[MatLike]): The list of frames to be written to the GIF file.
+        """
+        try:
+            imageio.mimsave(str(output_gif), frames)
+            print(f"Frames successfully written to GIF: {output_gif}")
+        except Exception as e:
+            print(f"Error converting frames to GIF: {e}")

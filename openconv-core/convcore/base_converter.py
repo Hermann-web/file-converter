@@ -208,6 +208,19 @@ class ResolvedInputFile:
         return f"{self.__class__.__name__}: {self.path.name}"
 
 
+class InvalidOutputFormatError(Exception):
+    """Exception raised when the output content format check fails after conversion."""
+
+    def __init__(self, solving_tips):
+        self.solving_tips = solving_tips
+        super().__init__(
+            "Output content format check failed after conversion and before writing. See solving tips for help."
+        )
+
+    def __str__(self):
+        return f"{super().__str__()}\n\n### Some solving tips\n{self.solving_tips}\n"
+
+
 class BaseConverter(ABC):
     """
     Abstract base class for file conversion, defining the template for input to output file conversion.
@@ -284,9 +297,9 @@ class BaseConverter(ABC):
             logger.info("Using output content")
             self.output_content = self._convert(input_contents=self._input_contents)
             # Check output content format
-            assert self._check_output_format(
-                self.output_content
-            ), f"Output content format check failed after conversion"
+            solving_tips = self.__get_bad_output_content_solving_tips__()
+            if not self._check_output_format(self.output_content):
+                raise InvalidOutputFormatError(solving_tips)
             logger.debug("Output content format check passed")
             # save file
             logger.info("Writing output file...")
@@ -423,6 +436,12 @@ class BaseConverter(ABC):
         Abstract method to be implemented by subclasses to perform the actual file conversion process.
         """
         logger.info("Conversion method not implemented")
+
+    def __get_bad_output_content_solving_tips__(self) -> str:
+        _solving_tips = (
+            f"If you convertion method (`{self.__class__.__name__}._convert(self, input_content:List[])`) uses only one input, make sure you select the first element of input_contents list before procedding",
+        )
+        return "\n".join(f"{i+1}. {elt}" for i, elt in enumerate(_solving_tips))
 
     def _read_content(self, input_path: Path):
         return self.file_reader._read_content(input_path)

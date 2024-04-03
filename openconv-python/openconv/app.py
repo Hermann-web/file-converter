@@ -17,6 +17,7 @@ from openconv.converters import (
     PDFToImageConverter,
     PDFToImageExtractor,
     TXTToMDConverter,
+    VideoToGIFConverter,
     XLSXToCSVConverter,
     XMLToJSONConverter,
 )
@@ -38,6 +39,7 @@ class ConverterApp(BaseConverterApp):
         PDFToImageExtractor,
         ImageToVideoConverterWithPillow,
         ImageToVideoConverterWithOpenCV,
+        VideoToGIFConverter,
     ]
 
 
