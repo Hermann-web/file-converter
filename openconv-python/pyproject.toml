@@ -28,20 +28,21 @@ url = "https://test.pypi.org/simple/"
 priority = "explicit"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 openconv-core = {version = "^0.1.5", source = "test-pypi"}
-numpy = "^1.26.4"
-opencv-python = "^4.9.0.80"
+numpy = "^1.24.0"
+opencv-python = "^4.8.1.78"
 pillow = "^10.3.0"
 pypdf2 = "^3.0.1"
 python-magic = "^0.4.27"
-pandas = "^2.2.1"
+pandas = "^2.0.0"
 imageio = "^2.30.0"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"
 isort = "^5.13.2"
+pydeps = "^1.10.0"
 
 [tool.isort]
 profile = "black"
