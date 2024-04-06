@@ -25,7 +25,7 @@ from cv2.typing import MatLike
 from PIL import Image as PillowImage
 from PyPDF2 import PdfReader, PdfWriter
 
-from openconv.io_handlers import (
+from .io_handlers import (
     FramesToGIFWriterWithImageIO,
     ImageToOpenCVReader,
     ImageToPillowReader,

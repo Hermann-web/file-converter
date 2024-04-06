@@ -8,7 +8,7 @@ import argparse
 
 from convcore.converter_app import BaseConverterApp
 
-from openconv.converters import (
+from .converters import (
     CSVToXMLConverter,
     ImageToPDFConverter,
     ImageToVideoConverterWithOpenCV,

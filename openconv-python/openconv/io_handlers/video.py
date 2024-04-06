@@ -7,7 +7,7 @@ import numpy as np
 from convcore.io_handler import FileReader, FileWriter
 from cv2.typing import MatLike
 
-from openconv.utils.image_to_video import save_video_from_array_images
+from ..utils.image_to_video import save_video_from_array_images
 
 
 class VideoArrayWriter(FileWriter):
