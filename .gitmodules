@@ -1,0 +1,6 @@
+[submodule "openconv-core"]
+	path = openconv-core
+	url = https://github.com/Hermann-web/openconv-core
+[submodule "openconv-python"]
+	path = openconv-python
+	url = https://github.com/Hermann-web/openconv-python
