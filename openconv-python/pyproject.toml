@@ -3,7 +3,7 @@ name = "openconv-python"
 packages = [
     {include = "openconv"}
 ]
-version = "0.2.4"
+version = "0.2.5a0"
 description = "A collection of Python scripts for file conversion tasks, built on top of the openconv-core framework."
 authors = ["Hermann Agossou <agossouhermann7@gmail.com>"]
 readme = "README.md"
@@ -44,6 +44,11 @@ black = "^24.3.0"
 isort = "^5.13.2"
 pydeps = "^1.10.0"
 flake8 = "^7.0.0"
+
+[tool.poetry.group.buildthedocs.dependencies]
+sphinx = "^7.0.0"
+sphinx-rtd-theme = "^2.0.0"
+m2r2 = "^0.3.3.post2"
 
 [tool.isort]
 profile = "black"
