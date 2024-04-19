@@ -23,12 +23,25 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8.1"
 loguru = "^0.7.2"
-
-
-[tool.poetry.group.mimes.dependencies]
 python-magic = "^0.4.27"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.4.0"
+flake8 = "^7.0.0"
+
+[tool.poetry.group.buildthedocs.dependencies]
+sphinx = "^7.0.0"
+sphinx-rtd-theme = "^2.0.0"
+m2r2 = "^0.3.3.post2"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 88
 
 [build-system]
 requires = ["poetry-core"]
