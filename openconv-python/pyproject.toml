@@ -28,7 +28,7 @@ url = "https://test.pypi.org/simple/"
 priority = "explicit"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.1"
 openconv-core = {version = "^0.1.5", source = "test-pypi"}
 numpy = "^1.24.0"
 opencv-python = "^4.8.1.78"
@@ -43,6 +43,7 @@ imageio = "^2.30.0"
 black = "^24.3.0"
 isort = "^5.13.2"
 pydeps = "^1.10.0"
+flake8 = "^7.0.0"
 
 [tool.isort]
 profile = "black"

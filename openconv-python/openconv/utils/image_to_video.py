@@ -11,9 +11,9 @@ Usage:
     $ python images_to_video.py <input_images> <output_video>
 
 Arguments:
-    input_images: List of input image files to be converted into a video file. 
+    input_images: List of input image files to be converted into a video file.
                   Example: image1.jpg image2.jpg
-    output_video: Path to the output video file. 
+    output_video: Path to the output video file.
                   Example: output_video.avi
 
 Example:
@@ -63,7 +63,7 @@ def save_video_from_array_images(
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     else:
         ValueError(
-            f"bad suffix for the videowriter. found suffix={suffix.lower()} instead of .avi or .mp4 "
+            f"bad suffix for the videowriter. found suffix={suffix.lower()} instead of .avi or .mp4"
         )
 
     print("size = ", size)

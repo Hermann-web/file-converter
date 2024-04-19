@@ -14,7 +14,6 @@ from .converters import (
     ImageToVideoConverterWithOpenCV,
     ImageToVideoConverterWithPillow,
     JSONToCSVConverter,
-    PDFToImageConverter,
     PDFToImageExtractor,
     TXTToMDConverter,
     VideoToGIFConverter,
